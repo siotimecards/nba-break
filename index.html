@@ -79,7 +79,7 @@
       div.onclick = () => {
         const pseudo = prompt("Entre ton pseudo :");
         if (pseudo) {
-          fetch(endpoint, {
+          fetch(endpoint = https://script.google.com/macros/s/AKfycbzrrgmWpD-AGFBz3BXVWGyQPUm9YWeY-DxeN6yJd_s/dev, {
             method: "POST",
             body: JSON.stringify({ pseudo: pseudo, team: team.name })
           }).then(res => {
