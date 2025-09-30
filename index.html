@@ -7,9 +7,14 @@
     body { font-family: Arial, sans-serif; text-align: center; background: #f4f4f4; }
     h1 { margin: 20px; }
     .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 15px; padding: 20px; }
-    .team { cursor: pointer; background: white; padding: 10px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+    .team { cursor: pointer; background: white; padding: 10px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.2); transition: 0.2s; }
     .team img { width: 80px; height: 80px; }
     .team:hover { transform: scale(1.1); }
+    /* 👉 style pour les équipes déjà prises */
+    .taken {
+      opacity: 0.3;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -17,7 +22,8 @@
   <div class="grid" id="teams"></div>
 
   <script>
-    const endpoint = "COLLE_ICI_TON_URL_APP_SCRIPT"; // <-- ton URL Google Script
+    // ⚠️ Mets ici ton URL Apps Script (déployé en web app)
+    const endpoint = "COLLE_ICI_TON_URL_APP_SCRIPT";
 
     const teams = [
       {name:"Atlanta Hawks", logo:"https://a.espncdn.com/i/teamlogos/nba/500/atl.png"},
@@ -53,9 +59,22 @@
     ];
 
     const container = document.getElementById("teams");
+
+    // 🔹 fonction pour charger la liste des équipes déjà prises
+    async function loadTakenTeams() {
+      const res = await fetch(endpoint);
+      const taken = await res.json();
+      taken.forEach(teamName => {
+        const div = document.querySelector(`[data-team="${teamName}"]`);
+        if (div) div.classList.add("taken");
+      });
+    }
+
+    // 🔹 création des logos
     teams.forEach(team => {
       const div = document.createElement("div");
       div.className = "team";
+      div.setAttribute("data-team", team.name); // identifiant équipe
       div.innerHTML = `<img src="${team.logo}" alt="${team.name}"><br>${team.name}`;
       div.onclick = () => {
         const pseudo = prompt("Entre ton pseudo :");
@@ -63,11 +82,17 @@
           fetch(endpoint, {
             method: "POST",
             body: JSON.stringify({ pseudo: pseudo, team: team.name })
-          }).then(res => alert("✅ Inscription envoyée pour " + team.name));
+          }).then(res => {
+            alert("✅ Inscription envoyée pour " + team.name);
+            div.classList.add("taken"); // grise directement
+          });
         }
       };
       container.appendChild(div);
     });
+
+    // 🔹 on charge les équipes déjà prises dès le début
+    loadTakenTeams();
   </script>
 </body>
 </html>
