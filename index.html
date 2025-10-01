@@ -2,10 +2,11 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>NBA Break S1-E6  - Inscriptions</title>
+  <title>NBA Break - Inscriptions</title>
   <style>
     body { font-family: Arial, sans-serif; text-align: center; }
     h1 { color: #333; }
+    .timer { font-size: 20px; font-weight: bold; margin: 10px; color: red; }
     .teams { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin: 20px; }
     .team {
       width: 120px;
@@ -25,55 +26,59 @@
   </style>
 </head>
 <body>
-  <h1>📋 Inscriptions au NBA Break</h1>
+  <h1>📋 Inscriptions au NBA Break S1-E6 </h1>
+  <div class="timer" id="timer"></div>
   <div class="teams" id="teams"></div>
 
   <h2>✅ Récap des inscrits</h2>
   <div class="recap" id="recap"></div>
 
   <script>
-    // 🔗 Ton URL Apps Script (⚠️ à remplacer par la tienne)
+    // 🔗 Ton URL Apps Script (⚠️ remplace par ton URL en /exec)
     const ENDPOINT = "https://script.google.com/macros/s/AKfycbw8Tevahf-zTpiWn4zPrLYDSV0b47_kpFnb4XRoi8SMzQLlnG48swMOYwcozqp-_Fts/exec";
 
-    // 🏀 Liste des équipes NBA avec un tarif fictif
+    // ⏳ Date limite d’inscription (AAAA, MM-1, JJ, HH, MM)
+    const deadline = new Date(2025, 9, 5, 20, 0, 0); // 5 octobre 2025 à 20h00
+
+    // 🏀 Les 30 équipes NBA avec logos + tarifs
     const teams = [
-  { name: "Atlanta Hawks", logo: "https://cdn.nba.com/logos/nba/1610612737/primary/L/logo.svg", price: 10 },
-  { name: "Boston Celtics", logo: "https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg", price: 12 },
-  { name: "Brooklyn Nets", logo: "https://cdn.nba.com/logos/nba/1610612751/primary/L/logo.svg", price: 9 },
-  { name: "Charlotte Hornets", logo: "https://cdn.nba.com/logos/nba/1610612766/primary/L/logo.svg", price: 8 },
-  { name: "Chicago Bulls", logo: "https://cdn.nba.com/logos/nba/1610612741/primary/L/logo.svg", price: 15 },
-  { name: "Cleveland Cavaliers", logo: "https://cdn.nba.com/logos/nba/1610612739/primary/L/logo.svg", price: 11 },
-  { name: "Dallas Mavericks", logo: "https://cdn.nba.com/logos/nba/1610612742/primary/L/logo.svg", price: 13 },
-  { name: "Denver Nuggets", logo: "https://cdn.nba.com/logos/nba/1610612743/primary/L/logo.svg", price: 14 },
-  { name: "Detroit Pistons", logo: "https://cdn.nba.com/logos/nba/1610612765/primary/L/logo.svg", price: 7 },
-  { name: "Golden State Warriors", logo: "https://cdn.nba.com/logos/nba/1610612744/primary/L/logo.svg", price: 18 },
-  { name: "Houston Rockets", logo: "https://cdn.nba.com/logos/nba/1610612745/primary/L/logo.svg", price: 9 },
-  { name: "Indiana Pacers", logo: "https://cdn.nba.com/logos/nba/1610612754/primary/L/logo.svg", price: 10 },
-  { name: "Los Angeles Clippers", logo: "https://cdn.nba.com/logos/nba/1610612746/primary/L/logo.svg", price: 11 },
-  { name: "Los Angeles Lakers", logo: "https://cdn.nba.com/logos/nba/1610612747/primary/L/logo.svg", price: 20 },
-  { name: "Memphis Grizzlies", logo: "https://cdn.nba.com/logos/nba/1610612763/primary/L/logo.svg", price: 10 },
-  { name: "Miami Heat", logo: "https://cdn.nba.com/logos/nba/1610612748/primary/L/logo.svg", price: 13 },
-  { name: "Milwaukee Bucks", logo: "https://cdn.nba.com/logos/nba/1610612749/primary/L/logo.svg", price: 14 },
-  { name: "Minnesota Timberwolves", logo: "https://cdn.nba.com/logos/nba/1610612750/primary/L/logo.svg", price: 9 },
-  { name: "New Orleans Pelicans", logo: "https://cdn.nba.com/logos/nba/1610612740/primary/L/logo.svg", price: 10 },
-  { name: "New York Knicks", logo: "https://cdn.nba.com/logos/nba/1610612752/primary/L/logo.svg", price: 16 },
-  { name: "Oklahoma City Thunder", logo: "https://cdn.nba.com/logos/nba/1610612760/primary/L/logo.svg", price: 12 },
-  { name: "Orlando Magic", logo: "https://cdn.nba.com/logos/nba/1610612753/primary/L/logo.svg", price: 9 },
-  { name: "Philadelphia 76ers", logo: "https://cdn.nba.com/logos/nba/1610612755/primary/L/logo.svg", price: 14 },
-  { name: "Phoenix Suns", logo: "https://cdn.nba.com/logos/nba/1610612756/primary/L/logo.svg", price: 15 },
-  { name: "Portland Trail Blazers", logo: "https://cdn.nba.com/logos/nba/1610612757/primary/L/logo.svg", price: 8 },
-  { name: "Sacramento Kings", logo: "https://cdn.nba.com/logos/nba/1610612758/primary/L/logo.svg", price: 11 },
-  { name: "San Antonio Spurs", logo: "https://cdn.nba.com/logos/nba/1610612759/primary/L/logo.svg", price: 12 },
-  { name: "Toronto Raptors", logo: "https://cdn.nba.com/logos/nba/1610612761/primary/L/logo.svg", price: 10 },
-  { name: "Utah Jazz", logo: "https://cdn.nba.com/logos/nba/1610612762/primary/L/logo.svg", price: 9 },
-  { name: "Washington Wizards", logo: "https://cdn.nba.com/logos/nba/1610612764/primary/L/logo.svg", price: 8 }
-      // 👉 ajoute les 30 équipes ici avec logo + price
+      { name: "Atlanta Hawks", logo: "https://cdn.nba.com/logos/nba/1610612737/primary/L/logo.svg", price: 10 },
+      { name: "Boston Celtics", logo: "https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg", price: 12 },
+      { name: "Brooklyn Nets", logo: "https://cdn.nba.com/logos/nba/1610612751/primary/L/logo.svg", price: 9 },
+      { name: "Charlotte Hornets", logo: "https://cdn.nba.com/logos/nba/1610612766/primary/L/logo.svg", price: 8 },
+      { name: "Chicago Bulls", logo: "https://cdn.nba.com/logos/nba/1610612741/primary/L/logo.svg", price: 15 },
+      { name: "Cleveland Cavaliers", logo: "https://cdn.nba.com/logos/nba/1610612739/primary/L/logo.svg", price: 11 },
+      { name: "Dallas Mavericks", logo: "https://cdn.nba.com/logos/nba/1610612742/primary/L/logo.svg", price: 13 },
+      { name: "Denver Nuggets", logo: "https://cdn.nba.com/logos/nba/1610612743/primary/L/logo.svg", price: 14 },
+      { name: "Detroit Pistons", logo: "https://cdn.nba.com/logos/nba/1610612765/primary/L/logo.svg", price: 7 },
+      { name: "Golden State Warriors", logo: "https://cdn.nba.com/logos/nba/1610612744/primary/L/logo.svg", price: 18 },
+      { name: "Houston Rockets", logo: "https://cdn.nba.com/logos/nba/1610612745/primary/L/logo.svg", price: 9 },
+      { name: "Indiana Pacers", logo: "https://cdn.nba.com/logos/nba/1610612754/primary/L/logo.svg", price: 10 },
+      { name: "Los Angeles Clippers", logo: "https://cdn.nba.com/logos/nba/1610612746/primary/L/logo.svg", price: 11 },
+      { name: "Los Angeles Lakers", logo: "https://cdn.nba.com/logos/nba/1610612747/primary/L/logo.svg", price: 20 },
+      { name: "Memphis Grizzlies", logo: "https://cdn.nba.com/logos/nba/1610612763/primary/L/logo.svg", price: 10 },
+      { name: "Miami Heat", logo: "https://cdn.nba.com/logos/nba/1610612748/primary/L/logo.svg", price: 13 },
+      { name: "Milwaukee Bucks", logo: "https://cdn.nba.com/logos/nba/1610612749/primary/L/logo.svg", price: 14 },
+      { name: "Minnesota Timberwolves", logo: "https://cdn.nba.com/logos/nba/1610612750/primary/L/logo.svg", price: 9 },
+      { name: "New Orleans Pelicans", logo: "https://cdn.nba.com/logos/nba/1610612740/primary/L/logo.svg", price: 10 },
+      { name: "New York Knicks", logo: "https://cdn.nba.com/logos/nba/1610612752/primary/L/logo.svg", price: 16 },
+      { name: "Oklahoma City Thunder", logo: "https://cdn.nba.com/logos/nba/1610612760/primary/L/logo.svg", price: 12 },
+      { name: "Orlando Magic", logo: "https://cdn.nba.com/logos/nba/1610612753/primary/L/logo.svg", price: 9 },
+      { name: "Philadelphia 76ers", logo: "https://cdn.nba.com/logos/nba/1610612755/primary/L/logo.svg", price: 14 },
+      { name: "Phoenix Suns", logo: "https://cdn.nba.com/logos/nba/1610612756/primary/L/logo.svg", price: 15 },
+      { name: "Portland Trail Blazers", logo: "https://cdn.nba.com/logos/nba/1610612757/primary/L/logo.svg", price: 8 },
+      { name: "Sacramento Kings", logo: "https://cdn.nba.com/logos/nba/1610612758/primary/L/logo.svg", price: 11 },
+      { name: "San Antonio Spurs", logo: "https://cdn.nba.com/logos/nba/1610612759/primary/L/logo.svg", price: 12 },
+      { name: "Toronto Raptors", logo: "https://cdn.nba.com/logos/nba/1610612761/primary/L/logo.svg", price: 10 },
+      { name: "Utah Jazz", logo: "https://cdn.nba.com/logos/nba/1610612762/primary/L/logo.svg", price: 9 },
+      { name: "Washington Wizards", logo: "https://cdn.nba.com/logos/nba/1610612764/primary/L/logo.svg", price: 8 }
     ];
 
     const teamsDiv = document.getElementById("teams");
     const recapDiv = document.getElementById("recap");
+    const timerDiv = document.getElementById("timer");
 
-    // 🎨 Afficher toutes les équipes
+    // 🎨 Affiche les équipes
     function renderTeams(takenTeams = []) {
       teamsDiv.innerHTML = "";
       teams.forEach(team => {
@@ -92,7 +97,7 @@
       });
     }
 
-    // 📩 Quand un utilisateur choisit une équipe
+    // 📩 Choix d’une équipe
     async function selectTeam(team) {
       const pseudo = prompt("Entre ton pseudo :");
       if (!pseudo) return;
@@ -120,14 +125,12 @@
       }
     }
 
-    // 🔄 Charger les données depuis Google Sheet
+    // 🔄 Chargement des données depuis Google Sheet
     async function loadData() {
-      // Récupérer les équipes déjà prises
       const takenRes = await fetch(ENDPOINT + "?mode=taken");
       const takenTeams = await takenRes.json();
       renderTeams(takenTeams);
 
-      // Récupérer le récap des inscrits
       const recapRes = await fetch(ENDPOINT + "?mode=recap");
       const recapData = await recapRes.json();
 
@@ -143,8 +146,29 @@
       });
     }
 
+    // ⏱️ Timer de fin d’inscriptions
+    function updateTimer() {
+      const now = new Date();
+      const diff = deadline - now;
+
+      if (diff <= 0) {
+        timerDiv.innerHTML = "⛔ Inscriptions terminées !";
+        document.querySelectorAll(".team").forEach(div => div.classList.add("taken"));
+        return;
+      }
+
+      const days = Math.floor(diff / (1000*60*60*24));
+      const hours = Math.floor((diff / (1000*60*60)) % 24);
+      const minutes = Math.floor((diff / (1000*60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      timerDiv.innerHTML = `⏳ Fin dans ${days}j ${hours}h ${minutes}m ${seconds}s`;
+    }
+
     // 🚀 Initialisation
     loadData();
+    setInterval(loadData, 5000); // 🔄 rafraîchit toutes les 5 secondes
+    setInterval(updateTimer, 1000); // ⏱️ met à jour le timer chaque seconde
   </script>
 </body>
 </html>
