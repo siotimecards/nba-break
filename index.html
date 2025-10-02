@@ -26,7 +26,9 @@
   </style>
 </head>
 <body>
-  <h1>📋 Inscriptions au NBA Break S1-E6 </h1>
+<img src="logo.png" alt="Logo" 
+     style="position:fixed; top:10px; right:10px; width:80px;">
+  <h1>📋 Inscriptions au NBA Break</h1>
   <div class="timer" id="timer"></div>
   <div class="teams" id="teams"></div>
 
@@ -34,13 +36,13 @@
   <div class="recap" id="recap"></div>
 
   <script>
-    // 🔗 Ton URL Apps Script (⚠️ remplace par ton URL en /exec)
+    // 🔗 Ton URL Apps Script
     const ENDPOINT = "https://script.google.com/macros/s/AKfycbw8Tevahf-zTpiWn4zPrLYDSV0b47_kpFnb4XRoi8SMzQLlnG48swMOYwcozqp-_Fts/exec";
 
     // ⏳ Date limite d’inscription (AAAA, MM-1, JJ, HH, MM)
-    const deadline = new Date(2025, 9, 5, 20, 0, 0); // 5 octobre 2025 à 20h00
+    const deadline = new Date(2025, 9, 5, 20, 0, 0); // 5 octobre 2025 20:00
 
-    // 🏀 Les 30 équipes NBA avec logos + tarifs
+    // 🏀 30 équipes NBA avec logos + tarifs
     const teams = [
       { name: "Atlanta Hawks", logo: "https://cdn.nba.com/logos/nba/1610612737/primary/L/logo.svg", price: 10 },
       { name: "Boston Celtics", logo: "https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg", price: 12 },
@@ -99,7 +101,7 @@
 
     // 📩 Choix d’une équipe
     async function selectTeam(team) {
-      const pseudo = prompt("Entre ton pseudo :");
+      const pseudo = prompt("Entre ton pseudo de réseau social :");
       if (!pseudo) return;
 
       const social = prompt("Sur quel réseau social est ton pseudo ? (ex: Instagram, X, YouTube)");
@@ -127,26 +129,30 @@
 
     // 🔄 Chargement des données depuis Google Sheet
     async function loadData() {
-      const takenRes = await fetch(ENDPOINT + "?mode=taken");
-      const takenTeams = await takenRes.json();
-      renderTeams(takenTeams);
+      try {
+        const takenRes = await fetch(ENDPOINT + "?mode=taken");
+        const takenTeams = await takenRes.json();
+        renderTeams(takenTeams);
 
-      const recapRes = await fetch(ENDPOINT + "?mode=recap");
-      const recapData = await recapRes.json();
+        const recapRes = await fetch(ENDPOINT + "?mode=recap");
+        const recapData = await recapRes.json();
 
-      recapDiv.innerHTML = "";
-      recapData.forEach(r => {
-        const team = teams.find(t => t.name === r.team);
-        if (team) {
-          const div = document.createElement("div");
-          div.className = "recap-item";
-          div.innerHTML = `<img src="${team.logo}" alt=""> <strong>${r.pseudo}</strong> (${team.name})`;
-          recapDiv.appendChild(div);
-        }
-      });
+        recapDiv.innerHTML = "";
+        recapData.forEach(r => {
+          const team = teams.find(t => t.name === r.team);
+          if (team) {
+            const div = document.createElement("div");
+            div.className = "recap-item";
+            div.innerHTML = `<img src="${team.logo}" alt=""> <strong>${r.pseudo}</strong> (${team.name})`;
+            recapDiv.appendChild(div);
+          }
+        });
+      } catch(err) {
+        console.error("Erreur chargement data : ", err);
+      }
     }
 
-    // ⏱️ Timer de fin d’inscriptions
+    // ⏱️ Timer
     function updateTimer() {
       const now = new Date();
       const diff = deadline - now;
@@ -167,8 +173,9 @@
 
     // 🚀 Initialisation
     loadData();
-    setInterval(loadData, 5000); // 🔄 rafraîchit toutes les 5 secondes
-    setInterval(updateTimer, 1000); // ⏱️ met à jour le timer chaque seconde
+    updateTimer();
+    setInterval(loadData, 15000); // rafraîchit toutes les 15 secondes
+    setInterval(updateTimer, 1000); // met à jour le timer toutes les secondes
   </script>
 </body>
 </html>
