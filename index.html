@@ -69,11 +69,35 @@
       from { opacity: 0; }
       to { opacity: 1; }
     }
+
+    /* --- Sélecteur réseaux sociaux --- */
+    .social-choice {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 10px;
+    }
+    .social-btn {
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 1em;
+      color: white;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .social-btn.x { background-color: #000; }
+    .social-btn.insta { background-color: #E1306C; }
+    .social-btn:hover { opacity: 0.8; }
   </style>
 </head>
 <body>
-<img src="logo.png" alt="Logo" 
-     style="position:fixed; top:10px; right:10px; width:80px;">
+
+  <!-- ✅ Logo corrigé -->
+  <img src="./Logo.png" alt="Logo Siotime" 
+       onerror="this.style.display='none'" 
+       style="position:fixed; top:10px; right:10px; width:80px;">
+
   <h1>📋 Inscriptions au NBA Break</h1>
   <div class="timer" id="timer"></div>
   <div class="teams" id="teams"></div>
@@ -100,19 +124,15 @@
   </div>
 
   <script>
-    // 🔗 Ton URL Apps Script
     const ENDPOINT = "https://script.google.com/macros/s/AKfycbw8Tevahf-zTpiWn4zPrLYDSV0b47_kpFnb4XRoi8SMzQLlnG48swMOYwcozqp-_Fts/exec";
+    const deadline = new Date(2025, 9, 19, 19, 0, 0);
 
-    // ⏳ Date limite d’inscription (AAAA, MM-1, JJ, HH, MM)
-    const deadline = new Date(2025, 9, 19, 19, 0, 0); // 19 octobre 2025 20:00
-
-    // 🏀 30 équipes NBA avec logos + tarifs
     const teams = [
       { name: "Atlanta Hawks", logo: "https://cdn.nba.com/logos/nba/1610612737/primary/L/logo.svg", price: 30 },
-      { name: "Boston Celtics", logo: "https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg",price: 0 },
+      { name: "Boston Celtics", logo: "https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg", price: 0 },
       { name: "Brooklyn Nets", logo: "https://cdn.nba.com/logos/nba/1610612751/primary/L/logo.svg", price: 11 },
       { name: "Charlotte Hornets", logo: "https://cdn.nba.com/logos/nba/1610612766/primary/L/logo.svg", price: 15 },
-      { name: "Chicago Bulls", logo: "https://cdn.nba.com/logos/nba/1610612741/primary/L/logo.svg",price: 0  },
+      { name: "Chicago Bulls", logo: "https://cdn.nba.com/logos/nba/1610612741/primary/L/logo.svg", price: 0 },
       { name: "Cleveland Cavaliers", logo: "https://cdn.nba.com/logos/nba/1610612739/primary/L/logo.svg", price: 13 },
       { name: "Dallas Mavericks", logo: "https://cdn.nba.com/logos/nba/1610612742/primary/L/logo.svg", price: 15 },
       { name: "Denver Nuggets", logo: "https://cdn.nba.com/logos/nba/1610612743/primary/L/logo.svg", price: 22 },
@@ -144,45 +164,41 @@
     const recapDiv = document.getElementById("recap");
     const timerDiv = document.getElementById("timer");
 
-    // 🎨 Affiche les équipes
     function renderTeams(takenTeams = []) {
       teamsDiv.innerHTML = "";
       teams.forEach(team => {
         const div = document.createElement("div");
         div.className = "team";
         if (takenTeams.includes(team.name)) div.classList.add("taken");
-
         div.innerHTML = `
           <img src="${team.logo}" alt="${team.name}">
           <p>${team.name}</p>
           <p class="price">${team.price}€</p>
         `;
-
         div.onclick = () => selectTeam(team);
         teamsDiv.appendChild(div);
       });
     }
 
-    // 📩 Choix d’une équipe
     async function selectTeam(team) {
       const pseudo = prompt("Entre ton pseudo de réseau social :");
       if (!pseudo) return;
 
-      const social = prompt("Sur quel réseau social est ton pseudo ? (ex: Instagram, X, YouTube)");
-      if (!social) return;
+      const choice = await chooseSocial();
+      if (!choice) return;
 
-      if (!confirm(`Confirmer ton inscription pour : ${team.name} (${team.price}€)`)) return;
+      if (!confirm(`Confirmer ton inscription pour : ${team.name} (${team.price}€) via ${choice}`)) return;
 
       try {
         const res = await fetch(ENDPOINT, {
           method: "POST",
-          body: JSON.stringify({ pseudo, social, team: team.name })
+          body: JSON.stringify({ pseudo, social: choice, team: team.name })
         });
         const json = await res.json();
 
         if (json.status === "ok") {
           alert(`✅ Inscription validée pour ${team.name}`);
-          loadData(); // Recharge les données
+          loadData();
         } else {
           alert("❌ Erreur : " + json.message);
         }
@@ -191,7 +207,21 @@
       }
     }
 
-    // 🔄 Chargement des données depuis Google Sheet
+    async function chooseSocial() {
+      return new Promise(resolve => {
+        const div = document.createElement("div");
+        div.innerHTML = `
+          <div class="social-choice">
+            <button class="social-btn x">X (Twitter)</button>
+            <button class="social-btn insta">Instagram</button>
+          </div>
+        `;
+        document.body.appendChild(div);
+        div.querySelector(".x").onclick = () => { div.remove(); resolve("X"); };
+        div.querySelector(".insta").onclick = () => { div.remove(); resolve("Instagram"); };
+      });
+    }
+
     async function loadData() {
       try {
         const takenRes = await fetch(ENDPOINT + "?mode=taken");
@@ -216,7 +246,6 @@
       }
     }
 
-    // ⏱️ Timer
     function updateTimer() {
       const now = new Date();
       const diff = deadline - now;
@@ -235,13 +264,11 @@
       timerDiv.innerHTML = `⏳ Fin dans ${days}j ${hours}h ${minutes}m ${seconds}s`;
     }
 
-    // 🚀 Initialisation
     loadData();
     updateTimer();
-    setInterval(loadData, 15000); // rafraîchit toutes les 15 secondes
-    setInterval(updateTimer, 1000); // met à jour le timer toutes les secondes
+    setInterval(loadData, 15000);
+    setInterval(updateTimer, 1000);
 
-    // 📜 Gestion du bouton de règlement
     const toggleBtn = document.getElementById("toggleRules");
     const rulesContent = document.getElementById("rulesContent");
     toggleBtn.addEventListener("click", () => {
