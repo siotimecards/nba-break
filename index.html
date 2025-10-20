@@ -24,6 +24,51 @@
     .recap-item img { width: 30px; }
     .price { font-size: 0.9em; color: green; }
 
+    /* --- Section Règlement --- */
+    .rules {
+      max-width: 700px;
+      margin: 40px auto;
+      text-align: left;
+      padding: 20px;
+      border-top: 2px solid #ccc;
+      font-size: 0.95em;
+      line-height: 1.6;
+      color: #333;
+    }
+    .rules h2 {
+      text-align: center;
+      color: #444;
+    }
+    .rules a {
+      color: #0066cc;
+      text-decoration: none;
+    }
+    .rules a:hover {
+      text-decoration: underline;
+    }
+    .toggle-btn {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 15px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-top: 20px;
+    }
+    .toggle-btn:hover {
+      background-color: #0056b3;
+    }
+    .rules-content {
+      display: none;
+      margin-top: 15px;
+      animation: fadeIn 0.4s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
   </style>
 </head>
 <body>
@@ -35,6 +80,24 @@
 
   <h2>✅ Récap des inscrits</h2>
   <div class="recap" id="recap"></div>
+
+  <!-- 🔽 Bouton et Règlement Siotime -->
+  <div class="rules">
+    <button class="toggle-btn" id="toggleRules">📜 Voir le règlement</button>
+    <div class="rules-content" id="rulesContent">
+      <h2>📜 Infos & Règlement – Siotime Breaks</h2>
+      <p>
+        📅 <strong>Live sur YouTube :</strong>
+        <a href="http://youtube.com/@Siotime" target="_blank">youtube.com/@Siotime</a><br>
+        💳 <strong>Paiement :</strong> via message privé sur nos réseaux (confirmation à réception).<br>
+        🎴 <strong>Breaks transparents :</strong> répartition des cartes en direct selon le format annoncé.<br>
+        📦 <strong>Expédition soignée</strong>, personnalisée selon vos envies. Possibilité de regrouper les envois pour réduire les frais.<br>
+        💬 <strong>Respect & bonne ambiance</strong> obligatoires — tout comportement inapproprié entraîne une exclusion.<br>
+        ❌ <strong>Annulation par Siotime = remboursement</strong>, désistement après paiement = non remboursé.<br>
+        📲 <strong>Contact :</strong> DM sur nos réseaux pour toute question ou suivi.
+      </p>
+    </div>
+  </div>
 
   <script>
     // 🔗 Ton URL Apps Script
@@ -177,8 +240,15 @@
     updateTimer();
     setInterval(loadData, 15000); // rafraîchit toutes les 15 secondes
     setInterval(updateTimer, 1000); // met à jour le timer toutes les secondes
+
+    // 📜 Gestion du bouton de règlement
+    const toggleBtn = document.getElementById("toggleRules");
+    const rulesContent = document.getElementById("rulesContent");
+    toggleBtn.addEventListener("click", () => {
+      const visible = rulesContent.style.display === "block";
+      rulesContent.style.display = visible ? "none" : "block";
+      toggleBtn.textContent = visible ? "📜 Voir le règlement" : "🔽 Masquer le règlement";
+    });
   </script>
 </body>
 </html>
-
-
