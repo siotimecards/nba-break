@@ -199,10 +199,14 @@
       if (!confirm(`Confirmer ton inscription pour : ${team.name} (${team.price}€) via ${choice}`)) return;
 
       try {
-        const res = await fetch(ENDPOINT, {
-          method: "POST",
-          body: JSON.stringify({ pseudo, social: choice, team: team.name })
-        });
+	  const res = await fetch(ENDPOINT, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({ pseudo, social: choice, team: team.name })
+});
+
         const json = await res.json();
 
         if (json.status === "ok") {
