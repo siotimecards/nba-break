@@ -1,83 +1,48 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>NBA Break S2-E1 - Inscriptions</title>
-<style>
-body::before {
-  content: "";
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: url('parquet.jpg') center/cover no-repeat fixed;
-  opacity: 0.4;
-  z-index: -1;
-}
-body { font-family: Arial, sans-serif; text-align: center; }
-h1 { color: #333; }
-.timer { font-size: 20px; font-weight: bold; margin: 10px; color: red; }
-.teams { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin: 20px; }
-.team { width: 120px; padding: 10px; border: 1px solid #ccc; border-radius: 10px; cursor: pointer; transition: 0.2s; }
-.team:hover { background: #f2f2f2; }
-.taken { opacity: 0.6; pointer-events: none; background: #ddd; }
-.team img { width: 60px; }
-.recap { margin-top: 30px; }
-.recap-item { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 5px; }
-.recap-item img { width: 30px; }
-.price { font-size: 0.9em; color: green; }
-
-/* --- Section Règlement --- */
-.rules { max-width: 700px; margin: 40px auto; text-align: left; padding: 20px; border-top: 2px solid #ccc; font-size: 0.95em; line-height: 1.6; color: #333; }
-.rules h2 { text-align: center; color: #444; }
-.rules a { color: #0066cc; text-decoration: none; }
-.rules a:hover { text-decoration: underline; }
-.toggle-btn { background-color: #007bff; color: white; border: none; border-radius: 8px; padding: 10px 15px; font-size: 1em; cursor: pointer; transition: background 0.3s; margin-top: 20px; }
-.toggle-btn:hover { background-color: #0056b3; }
-.rules-content { display: none; margin-top: 15px; animation: fadeIn 0.4s ease-in-out; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-/* --- Sélecteur réseaux sociaux --- */
-.social-choice { display: flex; justify-content: center; gap: 15px; margin-top: 10px; }
-.social-btn { border: none; border-radius: 8px; padding: 10px 20px; font-size: 1em; color: white; cursor: pointer; transition: 0.2s; }
-.social-btn.x { background-color: #000; }
-.social-btn.insta { background-color: #E1306C; }
-.social-btn:hover { opacity: 0.8; }
-</style>
+  <meta charset="UTF-8">
+  <title>NBA Break - Inscriptions S2-E1</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; }
+    h1 { color: #333; }
+    .timer { font-size: 20px; font-weight: bold; margin: 10px; color: red; }
+    .teams { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin: 20px; }
+    .team {
+      width: 120px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .team:hover { background: #f2f2f2; }
+    .taken { opacity: 0.4; pointer-events: none; background: #ddd; }
+    .team img { width: 60px; }
+    .recap { margin-top: 30px; }
+    .recap-item { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 5px; }
+    .recap-item img { width: 30px; }
+    .price { font-size: 0.9em; color: green; }
+  </style>
 </head>
 <body>
+  <h1>📋 Inscriptions au NBA Break</h1>
+  <div class="timer" id="timer"></div>
+  <div class="teams" id="teams"></div>
 
-<img src="./Logo.png" alt="Logo Siotime" onerror="this.style.display='none'" style="position:fixed; top:10px; right:10px; width:150px;">
-<img src="./Break.png" alt="Photo du Break" style="max-width:400px; margin-top:20px; border-radius:10px;">
-<h1>📋 Inscriptions au NBA Break S2-E1</h1>
-<div class="timer" id="timer"></div>
-<div class="teams" id="teams"></div>
+  <h2>✅ Récap des inscrits</h2>
+  <div class="recap" id="recap"></div>
 
-<h2>✅ Récap des inscrits</h2>
-<div class="recap" id="recap"></div>
+  <script>
+    // 🔗 Ton URL Apps Script
+    const ENDPOINT = "https://script.google.com/macros/s/AKfycbwsgj2MpdFs45mT3ZQHJwAOYxlemkEg4ODy8QhmdFDmbqSMsUDpi3-fTmxwlWdE-HZF/exec";
 
-<div class="rules">
-  <button class="toggle-btn" id="toggleRules">📜 Voir le règlement</button>
-  <div class="rules-content" id="rulesContent">
-    <h2>📜 Infos & Règlement – Siotime Breaks</h2>
-    <p>
-      📅 <strong>Live sur YouTube :</strong>
-      <a href="http://youtube.com/@Siotime" target="_blank">youtube.com/@Siotime</a><br>
-      💳 <strong>Paiement :</strong> via message privé sur nos réseaux (confirmation à réception).<br>
-      🎴 <strong>Breaks transparents :</strong> répartition des cartes en direct selon le format annoncé.<br>
-      📦 <strong>Expédition soignée</strong>, personnalisée selon vos envies.<br>
-      💬 <strong>Respect & bonne ambiance</strong> obligatoires.<br>
-      ❌ <strong>Annulation par Siotime = remboursement</strong>, désistement après paiement = non remboursé.<br>
-      📲 <strong>Contact :</strong> DM sur nos réseaux pour toute question ou suivi.
-    </p>
-  </div>
-</div>
+    // ⏳ Date limite d’inscription (AAAA, MM-1, JJ, HH, MM)
+    const deadline = new Date(2025, 10, 1, 20, 0, 0); // 5 octobre 2025 20:00
 
-<script>
-const ENDPOINT = "https://script.google.com/macros/s/AKfycbxKSgYUGnDLQQHgChXKTTzOZlTGpK6cJTET5vgMo67Xa8iPkI8A8GcPk33KyFotiuwL/exec"; // Mets ton URL Apps Script
-const deadline = new Date(2025, 10, 1, 19, 0, 0);
-
-const teams = [
-	  { name: "Atlanta Hawks", logo: "https://cdn.nba.com/logos/nba/1610612737/primary/L/logo.svg", price: 15 },
+    // 🏀 30 équipes NBA avec logos + tarifs
+    const teams = [
+      { name: "Atlanta Hawks", logo: "https://cdn.nba.com/logos/nba/1610612737/primary/L/logo.svg", price: 15 },
       { name: "Boston Celtics", logo: "https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg", price: 0 },
       { name: "Brooklyn Nets", logo: "https://cdn.nba.com/logos/nba/1610612751/primary/L/logo.svg", price: 10 },
       { name: "Charlotte Hornets", logo: "https://cdn.nba.com/logos/nba/1610612766/primary/L/logo.svg", price: 10 },
@@ -107,117 +72,108 @@ const teams = [
       { name: "Toronto Raptors", logo: "https://cdn.nba.com/logos/nba/1610612761/primary/L/logo.svg", price: 9 },
       { name: "Utah Jazz", logo: "https://cdn.nba.com/logos/nba/1610612762/primary/L/logo.svg", price: 13 },
       { name: "Washington Wizards", logo: "https://cdn.nba.com/logos/nba/1610612764/primary/L/logo.svg", price: 15 }
-];
+    ];
 
-const teamsDiv = document.getElementById("teams");
-const recapDiv = document.getElementById("recap");
-const timerDiv = document.getElementById("timer");
+    const teamsDiv = document.getElementById("teams");
+    const recapDiv = document.getElementById("recap");
+    const timerDiv = document.getElementById("timer");
 
-function renderTeams(takenTeams = []) {
-  teamsDiv.innerHTML = "";
-  teams.forEach(team => {
-    const div = document.createElement("div");
-    div.className = "team";
-    if (takenTeams.includes(team.name)) div.classList.add("taken");
-    div.innerHTML = `
-      <img src="${team.logo}" alt="${team.name}">
-      <p>${team.name}</p>
-      <p class="price">${team.price}€</p>
-    `;
-    div.onclick = () => selectTeam(team);
-    teamsDiv.appendChild(div);
-  });
-}
-
-async function selectTeam(team) {
-  const pseudo = prompt("Entre ton pseudo de réseau social :");
-  if (!pseudo) { alert("❌ Le pseudo est obligatoire"); return; }
-
-  const social = await chooseSocial();
-  if (!social) { alert("❌ Le réseau social est obligatoire"); return; }
-
-  if (!confirm(`Confirmer ton inscription pour : ${team.name} (${team.price}€) via ${social}`)) return;
-
-  try {
-    const res = await fetch(ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ pseudo, social, team: team.name })
-    });
-    const json = await res.json();
-    if (json.status === "ok") {
-      alert(`✅ Inscription validée pour ${team.name}`);
-      loadData();
-    } else {
-      alert("❌ Erreur : " + json.message);
-    }
-  } catch(err) {
-    alert("❌ Erreur réseau : " + err);
-  }
-}
-
-async function chooseSocial() {
-  return new Promise(resolve => {
-    const div = document.createElement("div");
-    div.innerHTML = `
-      <div class="social-choice">
-        <button class="social-btn x">X (Twitter)</button>
-        <button class="social-btn insta">Instagram</button>
-      </div>
-    `;
-    document.body.appendChild(div);
-    div.querySelector(".x").onclick = () => { div.remove(); resolve("X"); };
-    div.querySelector(".insta").onclick = () => { div.remove(); resolve("Instagram"); };
-  });
-}
-
-async function loadData() {
-  try {
-    const takenRes = await fetch(ENDPOINT + "?mode=taken");
-    const takenTeams = await takenRes.json();
-    renderTeams(takenTeams);
-
-    const recapRes = await fetch(ENDPOINT + "?mode=recap");
-    const recapData = await recapRes.json();
-    recapDiv.innerHTML = "";
-    recapData.forEach(r => {
-      const team = teams.find(t => t.name === r.team);
-      if (team) {
+    // 🎨 Affiche les équipes
+    function renderTeams(takenTeams = []) {
+      teamsDiv.innerHTML = "";
+      teams.forEach(team => {
         const div = document.createElement("div");
-        div.className = "recap-item";
-        div.innerHTML = `<img src="${team.logo}" alt=""> <strong>${r.pseudo}</strong> (${r.social}) - ${team.name}`;
-        recapDiv.appendChild(div);
+        div.className = "team";
+        if (takenTeams.includes(team.name)) div.classList.add("taken");
+
+        div.innerHTML = `
+          <img src="${team.logo}" alt="${team.name}">
+          <p>${team.name}</p>
+          <p class="price">${team.price}€</p>
+        `;
+
+        div.onclick = () => selectTeam(team);
+        teamsDiv.appendChild(div);
+      });
+    }
+
+    // 📩 Choix d’une équipe
+    async function selectTeam(team) {
+      const pseudo = prompt("Entre ton pseudo :");
+      if (!pseudo) return;
+
+      const social = prompt("Sur quel réseau social est ton pseudo ? (ex: Instagram, X, YouTube)");
+      if (!social) return;
+
+      if (!confirm(`Confirmer ton inscription pour : ${team.name} (${team.price}€)`)) return;
+
+      try {
+        const res = await fetch(ENDPOINT, {
+          method: "POST",
+          body: JSON.stringify({ pseudo, social, team: team.name })
+        });
+        const json = await res.json();
+
+        if (json.status === "ok") {
+          alert(`✅ Inscription validée pour ${team.name}`);
+          loadData(); // Recharge les données
+        } else {
+          alert("❌ Erreur : " + json.message);
+        }
+      } catch(err) {
+        alert("❌ Erreur réseau : " + err);
       }
-    });
-  } catch(err) { console.error(err); }
-}
+    }
 
-function updateTimer() {
-  const now = new Date();
-  const diff = deadline - now;
-  if (diff <= 0) {
-    timerDiv.innerHTML = "⛔ Inscriptions terminées !";
-    document.querySelectorAll(".team").forEach(div => div.classList.add("taken"));
-    return;
-  }
-  const days = Math.floor(diff / (1000*60*60*24));
-  const hours = Math.floor((diff / (1000*60*60)) % 24);
-  const minutes = Math.floor((diff / (1000*60)) % 60);
-  const seconds = Math.floor((diff / 1000) % 60);
-  timerDiv.innerHTML = `⏳ Fin dans ${days}j ${hours}h ${minutes}m ${seconds}s`;
-}
+    // 🔄 Chargement des données depuis Google Sheet
+    async function loadData() {
+      try {
+        const takenRes = await fetch(ENDPOINT + "?mode=taken");
+        const takenTeams = await takenRes.json();
+        renderTeams(takenTeams);
 
-loadData();
-updateTimer();
-setInterval(loadData, 15000);
-setInterval(updateTimer, 1000);
+        const recapRes = await fetch(ENDPOINT + "?mode=recap");
+        const recapData = await recapRes.json();
 
-document.getElementById("toggleRules").addEventListener("click", () => {
-  const rulesContent = document.getElementById("rulesContent");
-  const visible = rulesContent.style.display === "block";
-  rulesContent.style.display = visible ? "none" : "block";
-  document.getElementById("toggleRules").textContent = visible ? "📜 Voir le règlement" : "🔽 Masquer le règlement";
-});
-</script>
+        recapDiv.innerHTML = "";
+        recapData.forEach(r => {
+          const team = teams.find(t => t.name === r.team);
+          if (team) {
+            const div = document.createElement("div");
+            div.className = "recap-item";
+            div.innerHTML = `<img src="${team.logo}" alt=""> <strong>${r.pseudo}</strong> (${team.name})`;
+            recapDiv.appendChild(div);
+          }
+        });
+      } catch(err) {
+        console.error("Erreur chargement data : ", err);
+      }
+    }
+
+    // ⏱️ Timer
+    function updateTimer() {
+      const now = new Date();
+      const diff = deadline - now;
+
+      if (diff <= 0) {
+        timerDiv.innerHTML = "⛔ Inscriptions terminées !";
+        document.querySelectorAll(".team").forEach(div => div.classList.add("taken"));
+        return;
+      }
+
+      const days = Math.floor(diff / (1000*60*60*24));
+      const hours = Math.floor((diff / (1000*60*60)) % 24);
+      const minutes = Math.floor((diff / (1000*60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      timerDiv.innerHTML = `⏳ Fin dans ${days}j ${hours}h ${minutes}m ${seconds}s`;
+    }
+
+    // 🚀 Initialisation
+    loadData();
+    updateTimer();
+    setInterval(loadData, 15000); // rafraîchit toutes les 15 secondes
+    setInterval(updateTimer, 1000); // met à jour le timer toutes les secondes
+  </script>
 </body>
 </html>
