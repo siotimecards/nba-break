@@ -30,7 +30,7 @@
     .recap-item img { width: 30px; }
     .price { font-size: 0.9em; color: green; }
 
-    /* 🧾 Section règlement + image */
+    /* Section Break */
     .break-section {
       margin: 40px auto;
       max-width: 800px;
@@ -57,7 +57,30 @@
       line-height: 1.6;
     }
 
-    /* 🌐 Bandeau réseaux sociaux */
+    /* Section Top Carte */
+    .top-card-section {
+      margin: 40px auto;
+      max-width: 800px;
+      padding: 20px;
+      border: 2px solid #ddd;
+      border-radius: 15px;
+      background: #fff;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    .top-card-section img {
+      max-width: 300px;
+      border-radius: 12px;
+      margin: 20px auto;
+      display: block;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+    .top-card-section p {
+      font-size: 1.1em;
+      margin-top: 10px;
+    }
+
+    /* Bandeau réseaux sociaux */
     .social-bar {
       display: flex;
       justify-content: center;
@@ -84,10 +107,10 @@
   </style>
 </head>
 <body>
-  <!-- 🔗 Bandeau Réseaux sociaux -->
+  <!-- Bandeau Réseaux sociaux -->
   <div class="social-bar">
     <a href="https://www.youtube.com/@SioTime" target="_blank" title="YouTube Siotime">
-     <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" alt="YouTube">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" alt="YouTube">
     </a>
     <a href="https://www.instagram.com/siotime.cards/" target="_blank" title="Instagram Siotime">
       <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
@@ -104,7 +127,7 @@
   <h2>✅ Récap des inscrits</h2>
   <div class="recap" id="recap"></div>
 
-  <!-- 🏀 Section image + règlement -->
+  <!-- Section Break -->
   <div class="break-section">
     <h2>📦 Le Break en détail</h2>
     <img src="Break.png" alt="Break Siotime">
@@ -127,36 +150,21 @@
     </p>
   </div>
 
-  <!-- ⭐ Top Carte du Dernier Break -->
-<div class="top-card-section" style="
-  margin: 40px auto;
-  max-width: 800px;
-  padding: 20px;
-  border: 2px solid #ddd;
-  border-radius: 15px;
-  background: #fff;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-">
-  <h2>⭐ Top Carte du Dernier Break</h2>
+  <!-- Section Top Carte -->
+  <div class="top-card-section">
+    <h2>⭐ Top Carte du Dernier Break</h2>
+    <img src="TOPCARTES.png" alt="Top carte du break">
+    <p>🔥 <strong>Noa Essengue - Rookie Roundball Remnant Memorabilia</strong></p>
+  </div>
 
-  <!-- 🖼 Remplace l'image ici -->
-  <img src="TOPCARTES.png" alt="Top carte du break" style="
-    max-width: 300px;
-    border-radius: 12px;
-    margin: 20px auto;
-    display: block;
-    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-  ">
-
-
+  <!-- Footer -->
   <div class="footer">
     © 2025 Siotime – Passion & Breaks NBA ⚡
   </div>
 
   <script>
     const ENDPOINT = "https://script.google.com/macros/s/AKfycbwsgj2MpdFs45mT3ZQHJwAOYxlemkEg4ODy8QhmdFDmbqSMsUDpi3-fTmxwlWdE-HZF/exec";
-    const deadline = new Date(2025, 11, 8, 20, 0, 00);
+    const deadline = new Date(2025, 11, 8, 20, 0, 0);
 
     const teams = [
       { name: "Atlanta Hawks", logo: "https://cdn.nba.com/logos/nba/1610612737/primary/L/logo.svg", price: 18 },
@@ -284,13 +292,3 @@
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
