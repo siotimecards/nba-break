@@ -121,7 +121,7 @@
   </div>
 
   <h1>📋 Inscriptions au NBA Break Siotime S2-E15 </h1>
-  <div class="timer" id="timer"></div>
+  <div class="timer" id="openingTimer"></div>
   <div class="teams" id="teams"></div>
 
   <h2>✅ Récap des inscrits</h2>
@@ -164,7 +164,7 @@
 
   <script>
     const ENDPOINT = "https://script.google.com/macros/s/AKfycbwsgj2MpdFs45mT3ZQHJwAOYxlemkEg4ODy8QhmdFDmbqSMsUDpi3-fTmxwlWdE-HZF/exec";
-    const deadline = new Date(2026,7, 24, 20, 0, 0);
+    const openingDate = new Date(2026,7, 18, 20, 0, 0);
 
     const teams = [
       { name: "Atlanta Hawks", logo: "https://cdn.nba.com/logos/nba/1610612737/primary/L/logo.svg", price: 12 },
@@ -199,7 +199,7 @@
 
     const teamsDiv = document.getElementById("teams");
     const recapDiv = document.getElementById("recap");
-    const timerDiv = document.getElementById("timer");
+    const openingTimer = document.getElementById("openingTimer");
 
     function renderTeams(takenTeams = []) {
       teamsDiv.innerHTML = "";
@@ -218,6 +218,12 @@
     }
 
     async function selectTeam(team) {
+
+if (new Date() < openingDate) {
+    alert("⏳ Les inscriptions ne sont pas encore ouvertes !");
+    return;
+  }
+    
       const pseudo = prompt("Entre ton pseudo :");
       if (!pseudo) return;
 
@@ -269,19 +275,22 @@
     }
 
     function updateTimer() {
-      const now = new Date();
-      const diff = deadline - now;
-      if (diff <= 0) {
-        timerDiv.innerHTML = "⛔ Inscriptions terminées !";
-        document.querySelectorAll(".team").forEach(div => div.classList.add("taken"));
-        return;
-      }
-      const days = Math.floor(diff / (1000*60*60*24));
-      const hours = Math.floor((diff / (1000*60*60)) % 24);
-      const minutes = Math.floor((diff / (1000*60)) % 60);
-      const seconds = Math.floor((diff / 1000) % 60);
-      timerDiv.innerHTML = `⏳ Fin dans ${days}j ${hours}h ${minutes}m ${seconds}s`;
-    }
+  const now = new Date();
+  const diff = openingDate - now;
+
+  if (diff <= 0) {
+    openingTimer.innerHTML = "🟢 INSCRIPTIONS OUVERTES !";
+    return;
+  }
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+
+  openingTimer.innerHTML =
+    `🔥 Ouverture des inscriptions dans ${days}j ${hours}h ${minutes}m ${seconds}s`;
+}
 
     loadData();
     updateTimer();
