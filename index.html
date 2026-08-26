@@ -217,38 +217,148 @@
       });
     }
 
-    async function selectTeam(team) {
+async function selectTeam(team) {
 
-if (new Date() < openingDate) {
+  if (new Date() < openingDate) {
     alert("⏳ Les inscriptions ne sont pas encore ouvertes !");
     return;
   }
-    
-      const pseudo = prompt("Entre ton pseudo :");
-      if (!pseudo) return;
 
-      const social = prompt("Sur quel réseau social est ton pseudo ? (ex: Instagram, X, YouTube)");
-      if (!social) return;
+  // 🔒 Trouver toutes les cartes correspondant à cette team
+  const teamCards = Array.from(
+    document.querySelectorAll(".team")
+  ).filter(card => {
 
-      if (!confirm(`Confirmer ton inscription pour : ${team.name} (${team.price}€)`)) return;
+    const name = card.querySelector("p")?.textContent;
+    return name === team.name;
 
-      try {
-        const res = await fetch(ENDPOINT, {
-          method: "POST",
-          body: JSON.stringify({ pseudo, social, team: team.name })
-        });
-        const json = await res.json();
+  });
 
-        if (json.status === "ok") {
-          alert(`✅ Inscription validée pour ${team.name}`);
-          loadData();
-        } else {
-          alert("❌ Erreur : " + json.message);
-        }
-      } catch(err) {
-        alert("❌ Erreur réseau : " + err);
-      }
+  // 🔒 Bloquer immédiatement le clic
+  teamCards.forEach(card => {
+    card.classList.add("taken");
+    card.style.pointerEvents = "none";
+  });
+
+
+  const pseudo = prompt("Entre ton pseudo :");
+
+  if (!pseudo) {
+
+    // Réactiver si l'utilisateur annule
+    teamCards.forEach(card => {
+      card.classList.remove("taken");
+      card.style.pointerEvents = "auto";
+    });
+
+    return;
+  }
+
+
+  const social = prompt(
+    "Sur quel réseau social est ton pseudo ? (ex: Instagram, X, YouTube)"
+  );
+
+  if (!social) {
+
+    teamCards.forEach(card => {
+      card.classList.remove("taken");
+      card.style.pointerEvents = "auto";
+    });
+
+    return;
+  }
+
+
+  if (
+    !confirm(
+      `Confirmer ton inscription pour : ${team.name} (${team.price}€)`
+    )
+  ) {
+
+    teamCards.forEach(card => {
+      card.classList.remove("taken");
+      card.style.pointerEvents = "auto";
+    });
+
+    return;
+  }
+
+
+  try {
+
+    const res = await fetch(ENDPOINT, {
+      method: "POST",
+      body: JSON.stringify({
+        pseudo: pseudo,
+        social: social,
+        team: team.name
+      })
+    });
+
+
+    const json = await res.json();
+
+
+    // ================================================
+    // 🟢 INSCRIPTION VALIDÉE
+    // ================================================
+
+    if (json.status === "ok") {
+
+      alert(
+        `✅ Inscription validée pour ${team.name} !`
+      );
+
+      await loadData();
+
+      return;
     }
+
+
+    // ================================================
+    // 🔴 TEAM DÉJÀ PRISE
+    // ================================================
+
+    if (json.status === "taken") {
+
+      alert(
+        `⚠️ Désolé !\n\n` +
+        `Les ${team.name} viennent juste d'être pris ` +
+        `par quelqu'un d'autre.\n\n` +
+        `Choisis une autre équipe.`
+      );
+
+      await loadData();
+
+      return;
+    }
+
+
+    // ================================================
+    // ❌ AUTRE ERREUR
+    // ================================================
+
+    alert(
+      "❌ Une erreur est survenue : " +
+      (json.message || "Erreur inconnue")
+    );
+
+    await loadData();
+
+
+  } catch (err) {
+
+    console.error(err);
+
+    alert(
+      "❌ Impossible de contacter le serveur.\n" +
+      "Ton inscription n'a pas été confirmée."
+    );
+
+    await loadData();
+  }
+}
 
     async function loadData() {
       try {
@@ -294,7 +404,7 @@ if (new Date() < openingDate) {
 
     loadData();
     updateTimer();
-    setInterval(loadData, 15000);
+    setInterval(loadData, 5000);
     setInterval(updateTimer, 1000);
   </script>
 </body>
