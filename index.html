@@ -1,435 +1,1935 @@
 <!DOCTYPE html>
+
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
-  <title>NBA Break - Inscriptions S2-15 | Siotime</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>NBA Break - Inscriptions S2-E15 | Siotime</title>
+
   <style>
-    body { 
-      font-family: Arial, sans-serif; 
-      text-align: center; 
-      background: #fafafa; 
+    /* =========================================================
+       VARIABLES
+    ========================================================= */
+
+    :root {
+      --black: #0b0b0d;
+      --dark: #17181c;
+      --red: #d71920;
+      --green: #16833d;
+      --gold: #d4a83f;
+
+      --background: #f3f4f6;
+      --card: #ffffff;
+      --border: #e1e3e7;
+      --muted: #70747c;
+
+      --shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+      --shadow-hover: 0 12px 28px rgba(0, 0, 0, 0.12);
+    }
+
+
+    /* =========================================================
+       RESET
+    ========================================================= */
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
       margin: 0;
-    }
-    h1 { color: #333; }
-    .timer { font-size: 20px; font-weight: bold; margin: 10px; color: red; }
-    .teams { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin: 20px; }
-    .team {
-      width: 120px;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: 0.2s;
-      background: white;
-    }
-    .team:hover { background: #f2f2f2; }
-    .taken { opacity: 0.4; pointer-events: none; background: #ddd; }
-    .team img { width: 60px; }
-    .recap { margin-top: 30px; }
-    .recap-item { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 5px; }
-    .recap-item img { width: 30px; }
-    .price { font-size: 0.9em; color: green; }
-
-    /* Section Break */
-    .break-section {
-      margin: 40px auto;
-      max-width: 800px;
-      padding: 20px;
-      border: 2px solid #ddd;
-      border-radius: 15px;
-      background: #fff;
-      text-align: left;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    }
-    .break-section h2 {
+      font-family: Arial, Helvetica, sans-serif;
+      color: #18191c;
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(215, 25, 32, 0.06),
+          transparent 35%
+        ),
+        var(--background);
       text-align: center;
-      color: #222;
-    }
-    .break-section img {
-      display: block;
-      margin: 15px auto;
-      max-width: 100%;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-    .break-section ol {
-      margin: 10px 40px;
-      line-height: 1.6;
     }
 
-    /* Section Top Carte */
-    .top-card-section {
-      margin: 40px auto;
-      max-width: 800px;
-      padding: 20px;
-      border: 2px solid #ddd;
-      border-radius: 15px;
-      background: #fff;
-      text-align: center;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    }
-    .top-card-section img {
-      max-width: 300px;
-      border-radius: 12px;
-      margin: 20px auto;
-      display: block;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-    }
-    .top-card-section p {
-      font-size: 1.1em;
-      margin-top: 10px;
-    }
 
-    /* Bandeau réseaux sociaux */
+    /* =========================================================
+       RESEAUX SOCIAUX
+    ========================================================= */
+
     .social-bar {
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 20px;
-      background: #000;
-      padding: 10px;
-    }
-    .social-bar a img {
-      width: 32px;
-      height: 32px;
-      transition: transform 0.2s;
-    }
-    .social-bar a:hover img {
-      transform: scale(1.15);
-    }
+      gap: 18px;
 
-    .footer {
-      text-align: center;
-      font-size: 0.9em;
-      color: #555;
-      margin: 30px 0;
-    }
-  </style>
-</head>
-<body>
-  <!-- Bandeau Réseaux sociaux -->
-  <div class="social-bar">
-    <a href="https://www.youtube.com/@SioTime" target="_blank" title="YouTube Siotime">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" alt="YouTube">
-    </a>
-    <a href="https://www.instagram.com/siotime.cards/" target="_blank" title="Instagram Siotime">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
-    </a>
-    <a href="https://x.com/Siotimecards" target="_blank" title="X (Twitter) Siotime">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/X_logo_2023_original.svg" alt="X">
-    </a>
-  </div>
+      padding: 11px;
 
-  <h1>📋 Inscriptions au NBA Break Siotime S2-E15 </h1>
-  <div class="timer" id="openingTimer"></div>
-  <div class="teams" id="teams"></div>
-
-  <h2>✅ Récap des inscrits</h2>
-  <div class="recap" id="recap"></div>
-
-  <!-- Section Break -->
-  <div class="break-section">
-    <h2>📦 Le Break en détail</h2>
-    <img src="Break.png" alt="Break Siotime">
-
-    <h3>🧾 Règlement du Break Siotime</h3>
-    <ol>
-      <li>Chaque participant achète un ou plusieurs spots correspondant à des équipes NBA.</li>
-      <li>Le tirage au sort des équipes est effectué en direct sur YouTube.</li>
-      <li>Toutes les cartes ouvertes pour une équipe sont envoyées au participant qui la possède.</li>
-      <li>Si une carte multi-joueurs apparaît, elle est attribuée par tirage au sort en live.</li>
-      <li>Toutes les cartes sont envoyées sous protection (sleeves, toploader, enveloppe bulle).</li>
-      <li>Les envois sont suivis et sécurisés.</li>
-      <li>Aucun remboursement n’est possible une fois le break commencé.</li>
-      <li>Siotime s’engage à la transparence totale lors du live et à une ambiance conviviale.</li>
-    </ol>
-
-    <p style="text-align:center; margin-top:15px;">
-      🔴 Retrouvez-nous en direct sur <strong>YouTube : Siotime</strong><br>
-      📸 Suivez nos actus sur Instagram & X pour les prochains breaks !
-    </p>
-  </div>
-
-  <!-- Section Top Carte -->
-  <div class="top-card-section">
-    <h2>⭐ Top Carte du Dernier Break</h2>
-    <img src="TOPCARTES.png" alt="Top carte du break">
-    <p>🔥 <strong>Jayson Tatum – Pressure Point </strong></p>
-  </div>
-
-  <!-- Footer -->
-  <div class="footer">
-    © 2025 Siotime – Passion & Breaks NBA ⚡
-  </div>
-
-  <script>
-    const ENDPOINT = "https://script.google.com/macros/s/AKfycbwsgj2MpdFs45mT3ZQHJwAOYxlemkEg4ODy8QhmdFDmbqSMsUDpi3-fTmxwlWdE-HZF/exec";
-    const openingDate = new Date(2026,7, 18, 20, 0, 0);
-
-    const teams = [
-      { name: "Atlanta Hawks", logo: "https://cdn.nba.com/logos/nba/1610612737/primary/L/logo.svg", price: 12 },
-      { name: "Brooklyn Nets", logo: "https://cdn.nba.com/logos/nba/1610612751/primary/L/logo.svg", price: 14 },
-      { name: "Charlotte Hornets", logo: "https://cdn.nba.com/logos/nba/1610612766/primary/L/logo.svg", price: 22 },
-      { name: "Cleveland Cavaliers", logo: "https://cdn.nba.com/logos/nba/1610612739/primary/L/logo.svg", price: 19 },
-      { name: "Dallas Mavericks", logo: "https://cdn.nba.com/logos/nba/1610612742/primary/L/logo.svg", price: 45 },
-      { name: "Denver Nuggets", logo: "https://cdn.nba.com/logos/nba/1610612743/primary/L/logo.svg", price: 24 },
-      { name: "Detroit Pistons", logo: "https://cdn.nba.com/logos/nba/1610612765/primary/L/logo.svg", price: 15 },
-      { name: "Golden State Warriors", logo: "https://cdn.nba.com/logos/nba/1610612744/primary/L/logo.svg", price: 35 },
-      { name: "Houston Rockets", logo: "https://cdn.nba.com/logos/nba/1610612745/primary/L/logo.svg", price: 20 },
-      { name: "Indiana Pacers", logo: "https://cdn.nba.com/logos/nba/1610612754/primary/L/logo.svg", price: 12 },
-      { name: "Los Angeles Clippers", logo: "https://cdn.nba.com/logos/nba/1610612746/primary/L/logo.svg", price: 17 },
-      { name: "Los Angeles Lakers", logo: "https://cdn.nba.com/logos/nba/1610612747/primary/L/logo.svg", price: 37 },
-      { name: "Memphis Grizzlies", logo: "https://cdn.nba.com/logos/nba/1610612763/primary/L/logo.svg", price: 18 },
-      { name: "Miami Heat", logo: "https://cdn.nba.com/logos/nba/1610612748/primary/L/logo.svg", price: 13 },
-      { name: "Milwaukee Bucks", logo: "https://cdn.nba.com/logos/nba/1610612749/primary/L/logo.svg", price: 26 },
-      { name: "Minnesota Timberwolves", logo: "https://cdn.nba.com/logos/nba/1610612750/primary/L/logo.svg", price: 24 },
-      { name: "New Orleans Pelicans", logo: "https://cdn.nba.com/logos/nba/1610612740/primary/L/logo.svg", price: 15 },
-      { name: "New York Knicks", logo: "https://cdn.nba.com/logos/nba/1610612752/primary/L/logo.svg", price: 22 },
-      { name: "Oklahoma City Thunder", logo: "https://cdn.nba.com/logos/nba/1610612760/primary/L/logo.svg", price: 31 },
-      { name: "Orlando Magic", logo: "https://cdn.nba.com/logos/nba/1610612753/primary/L/logo.svg", price: 14 },
-      { name: "Philadelphia 76ers", logo: "https://cdn.nba.com/logos/nba/1610612755/primary/L/logo.svg", price: 23 },
-      { name: "Phoenix Suns", logo: "https://cdn.nba.com/logos/nba/1610612756/primary/L/logo.svg", price: 19 },
-      { name: "Portland Trail Blazers", logo: "https://cdn.nba.com/logos/nba/1610612757/primary/L/logo.svg", price: 11 },
-      { name: "Sacramento Kings", logo: "https://cdn.nba.com/logos/nba/1610612758/primary/L/logo.svg", price: 15 },
-      { name: "San Antonio Spurs", logo: "https://cdn.nba.com/logos/nba/1610612759/primary/L/logo.svg", price: 42 },
-      { name: "Toronto Raptors", logo: "https://cdn.nba.com/logos/nba/1610612761/primary/L/logo.svg", price: 12 },
-      { name: "Utah Jazz", logo: "https://cdn.nba.com/logos/nba/1610612762/primary/L/logo.svg", price: 16 },
-      { name: "Washington Wizards", logo: "https://cdn.nba.com/logos/nba/1610612764/primary/L/logo.svg", price: 13 }
-    ];
-
-    const teamsDiv = document.getElementById("teams");
-    const recapDiv = document.getElementById("recap");
-    const openingTimer = document.getElementById("openingTimer");
-
-    function renderTeams(takenTeams = []) {
-      teamsDiv.innerHTML = "";
-      teams.forEach(team => {
-        const div = document.createElement("div");
-        div.className = "team";
-        if (takenTeams.includes(team.name)) div.classList.add("taken");
-        div.innerHTML = `
-          <img src="${team.logo}" alt="${team.name}">
-          <p>${team.name}</p>
-          <p class="price">${team.price}€</p>
-        `;
-        div.onclick = () => selectTeam(team);
-        teamsDiv.appendChild(div);
-      });
-    }
-
-async function selectTeam(team) {
-
-  if (new Date() < openingDate) {
-    alert("⏳ Les inscriptions ne sont pas encore ouvertes !");
-    return;
-  }
-
-  // 🔒 Trouver toutes les cartes correspondant à cette team
-  const teamCards = Array.from(
-    document.querySelectorAll(".team")
-  ).filter(card => {
-
-    const name = card.querySelector("p")?.textContent;
-    return name === team.name;
-
-  });
-
-  // 🔒 Bloquer immédiatement le clic
-  teamCards.forEach(card => {
-    card.classList.add("taken");
-    card.style.pointerEvents = "none";
-  });
-
-
-  const pseudo = prompt("Entre ton pseudo :");
-
-  if (!pseudo) {
-
-    // Réactiver si l'utilisateur annule
-    teamCards.forEach(card => {
-      card.classList.remove("taken");
-      card.style.pointerEvents = "auto";
-    });
-
-    return;
-  }
-
-
-  const social = prompt(
-    "Sur quel réseau social est ton pseudo ? (ex: Instagram, X, YouTube)"
-  );
-
-  if (!social) {
-
-    teamCards.forEach(card => {
-      card.classList.remove("taken");
-      card.style.pointerEvents = "auto";
-    });
-
-    return;
-  }
-
-
-  if (
-    !confirm(
-      `Confirmer ton inscription pour : ${team.name} (${team.price}€)`
-    )
-  ) {
-
-    teamCards.forEach(card => {
-      card.classList.remove("taken");
-      card.style.pointerEvents = "auto";
-    });
-
-    return;
-  }
-
-
-  try {
-
-    const res = await fetch(ENDPOINT, {
-      method: "POST",
-      body: JSON.stringify({
-        pseudo: pseudo,
-        social: social,
-        team: team.name
-      })
-    });
-
-
-    const json = await res.json();
-
-
-    // ================================================
-    // 🟢 INSCRIPTION VALIDÉE
-    // ================================================
-
-    if (json.status === "ok") {
-
-      alert(
-        `✅ Inscription validée pour ${team.name} !`
+      background: linear-gradient(
+        135deg,
+        #050505,
+        #191a1e
       );
 
-      await loadData();
+      box-shadow: 0 3px 15px rgba(0, 0, 0, 0.18);
+    }
 
-      return;
+    .social-bar a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 40px;
+      height: 40px;
+
+      border-radius: 50%;
+
+      transition: 0.2s ease;
+    }
+
+    .social-bar a:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .social-bar img {
+      width: 30px;
+      height: 30px;
+      object-fit: contain;
     }
 
 
-    // ================================================
-    // 🔴 TEAM DÉJÀ PRISE
-    // ================================================
+    /* =========================================================
+       TITRE
+    ========================================================= */
 
-    if (json.status === "taken") {
+    h1 {
+      margin: 30px 15px 8px;
 
-      alert(
-        `⚠️ Désolé !\n\n` +
-        `Les ${team.name} viennent juste d'être pris ` +
-        `par quelqu'un d'autre.\n\n` +
-        `Choisis une autre équipe.`
-      );
+      color: var(--black);
 
-      await loadData();
+      font-size: clamp(26px, 4vw, 40px);
+      line-height: 1.15;
+      letter-spacing: -0.7px;
+    }
 
-      return;
+    .subtitle {
+      max-width: 750px;
+      margin: 0 auto;
+
+      padding: 0 15px;
+
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.5;
     }
 
 
-    // ================================================
-    // ❌ AUTRE ERREUR
-    // ================================================
+    /* =========================================================
+       COMPTEUR
+    ========================================================= */
 
-    alert(
-      "❌ Une erreur est survenue : " +
-      (json.message || "Erreur inconnue")
-    );
+    .timer-container {
+      max-width: 700px;
+      margin: 24px auto 30px;
+      padding: 0 15px;
+    }
 
-    await loadData();
+    .timer-box {
+      padding: 20px;
+
+      background: rgba(255, 255, 255, 0.96);
+
+      border: 1px solid var(--border);
+      border-radius: 18px;
+
+      box-shadow: var(--shadow);
+    }
+
+    .timer-title {
+      margin-bottom: 8px;
+
+      color: #55585e;
+
+      font-size: 14px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .timer {
+      color: var(--red);
+
+      font-size: clamp(22px, 4vw, 30px);
+      font-weight: 900;
+
+      font-variant-numeric: tabular-nums;
+    }
+
+    .timer.open {
+      color: var(--green);
+    }
 
 
-  } catch (err) {
+    /* =========================================================
+       SECTION EQUIPES
+    ========================================================= */
 
-    console.error(err);
+    .section-title {
+      margin: 35px 10px 10px;
 
-    alert(
-      "❌ Impossible de contacter le serveur.\n" +
-      "Ton inscription n'a pas été confirmée."
-    );
+      color: var(--black);
 
-    await loadData();
-  }
-}
+      font-size: clamp(23px, 3vw, 30px);
+    }
 
-    async function loadData() {
-      try {
-        const takenRes = await fetch(ENDPOINT + "?mode=taken");
-        const takenTeams = await takenRes.json();
-        renderTeams(takenTeams);
+    .teams {
+      display: grid;
 
-        const recapRes = await fetch(ENDPOINT + "?mode=recap");
-        const recapData = await recapRes.json();
+      grid-template-columns:
+        repeat(auto-fit, minmax(150px, 1fr));
 
-        recapDiv.innerHTML = "";
-        recapData.forEach(r => {
-          const team = teams.find(t => t.name === r.team);
-          if (team) {
-            const div = document.createElement("div");
-            div.className = "recap-item";
-            div.innerHTML = `<img src="${team.logo}" alt=""> <strong>${r.pseudo}</strong> (${team.name})`;
-            recapDiv.appendChild(div);
-          }
-        });
-      } catch(err) {
-        console.error("Erreur chargement data : ", err);
+      gap: 15px;
+
+      max-width: 1200px;
+
+      margin: 20px auto 45px;
+      padding: 0 15px;
+    }
+
+
+    /* =========================================================
+       CARTE EQUIPE
+    ========================================================= */
+
+    .team {
+      position: relative;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      min-height: 205px;
+
+      padding: 16px 10px 14px;
+
+      background: var(--card);
+
+      border: 1px solid var(--border);
+      border-radius: 17px;
+
+      cursor: pointer;
+
+      box-shadow: var(--shadow);
+
+      transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        border-color 0.18s ease,
+        opacity 0.18s ease;
+    }
+
+    .team:not(.taken):hover {
+      transform: translateY(-5px);
+
+      border-color: rgba(215, 25, 32, 0.4);
+
+      box-shadow: var(--shadow-hover);
+    }
+
+    .team img {
+      width: 78px;
+      height: 78px;
+
+      margin: 3px auto 10px;
+
+      object-fit: contain;
+    }
+
+    .team-name {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      min-height: 40px;
+
+      margin: 0;
+
+      color: #22242a;
+
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .price {
+      margin-top: auto !important;
+      margin-bottom: 5px !important;
+
+      padding: 6px 13px;
+
+      color: var(--green);
+
+      background: #eef9f1;
+
+      border: 1px solid #d3eedb;
+      border-radius: 999px;
+
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .status {
+      min-height: 18px;
+
+      margin-top: 5px;
+
+      color: #777b82;
+
+      font-size: 11px;
+      font-weight: 800;
+
+      text-transform: uppercase;
+      letter-spacing: 0.35px;
+    }
+
+
+    /* =========================================================
+       EQUIPE PRISE
+    ========================================================= */
+
+    .team.taken {
+      cursor: default;
+
+      opacity: 0.55;
+
+      background: #e7e8eb;
+
+      border-color: #d0d2d6;
+
+      filter: grayscale(0.45);
+    }
+
+    .team.taken .price {
+      color: #5d6066;
+
+      background: #f1f1f2;
+
+      border-color: #d6d7da;
+    }
+
+    .team.taken .status {
+      color: #55585e;
+    }
+
+
+    /* =========================================================
+       RECAP
+    ========================================================= */
+
+    .recap-container {
+      max-width: 850px;
+
+      margin: 40px auto;
+      padding: 0 15px 10px;
+    }
+
+    .recap-container h2 {
+      margin-bottom: 18px;
+    }
+
+    .recap {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .recap-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+
+      min-height: 55px;
+
+      padding: 8px 14px;
+
+      background: #ffffff;
+
+      border: 1px solid var(--border);
+      border-radius: 12px;
+
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+    }
+
+    .recap-item img {
+      width: 38px;
+      height: 38px;
+
+      object-fit: contain;
+    }
+
+    .recap-team {
+      color: #666a71;
+
+      font-size: 13px;
+    }
+
+    .empty-recap {
+      padding: 20px;
+
+      color: var(--muted);
+
+      background: #ffffff;
+
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+
+    /* =========================================================
+       SECTION BREAK
+    ========================================================= */
+
+    .content-section {
+      max-width: 850px;
+
+      margin: 40px auto;
+      padding: 25px;
+
+      background: #ffffff;
+
+      border: 1px solid var(--border);
+      border-radius: 18px;
+
+      box-shadow: var(--shadow);
+    }
+
+    .content-section h2 {
+      margin-top: 0;
+      margin-bottom: 18px;
+    }
+
+    .break-image {
+      display: block;
+
+      width: 100%;
+      max-width: 760px;
+
+      margin: 15px auto 25px;
+
+      border-radius: 14px;
+
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+    }
+
+    .content-section h3 {
+      margin-top: 25px;
+    }
+
+    .content-section ol {
+      margin: 10px 25px 0;
+      padding-left: 20px;
+
+      text-align: left;
+
+      line-height: 1.7;
+    }
+
+    .content-section p {
+      line-height: 1.6;
+    }
+
+
+    /* =========================================================
+       TOP CARTE
+    ========================================================= */
+
+    .top-card-image {
+      display: block;
+
+      width: 100%;
+      max-width: 320px;
+
+      margin: 20px auto;
+
+      border-radius: 13px;
+
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .top-card-name {
+      font-size: 17px;
+    }
+
+
+    /* =========================================================
+       MODALE INSCRIPTION
+    ========================================================= */
+
+    .modal {
+      position: fixed;
+      z-index: 1000;
+
+      inset: 0;
+
+      display: none;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 15px;
+
+      background: rgba(0, 0, 0, 0.72);
+
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-content {
+      width: 100%;
+      max-width: 430px;
+
+      padding: 26px;
+
+      background: #ffffff;
+
+      border-radius: 20px;
+
+      text-align: left;
+
+      box-shadow: 0 18px 55px rgba(0, 0, 0, 0.35);
+
+      animation: modalIn 0.18s ease-out;
+    }
+
+    @keyframes modalIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
       }
     }
 
+    .modal-content h2 {
+      margin: 0 0 16px;
+
+      text-align: center;
+    }
+
+    .selected-team {
+      margin-bottom: 20px;
+      padding: 13px;
+
+      background: #f5f5f6;
+
+      border-radius: 12px;
+
+      text-align: center;
+
+      font-weight: 900;
+    }
+
+    .modal-content label {
+      display: block;
+
+      margin-top: 12px;
+      margin-bottom: 6px;
+
+      font-weight: 800;
+    }
+
+    .modal-content input,
+    .modal-content select {
+      width: 100%;
+
+      padding: 12px;
+
+      background: #ffffff;
+
+      border: 1px solid #cfd1d5;
+      border-radius: 10px;
+
+      outline: none;
+
+      font-size: 16px;
+
+      transition: 0.2s ease;
+    }
+
+    .modal-content input:focus,
+    .modal-content select:focus {
+      border-color: var(--red);
+
+      box-shadow:
+        0 0 0 3px rgba(215, 25, 32, 0.1);
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 10px;
+
+      margin-top: 20px;
+    }
+
+    .modal-buttons button {
+      flex: 1;
+
+      padding: 13px;
+
+      border: none;
+      border-radius: 10px;
+
+      cursor: pointer;
+
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .cancel-btn {
+      background: #e5e6e8;
+    }
+
+    .cancel-btn:hover {
+      background: #dcdde0;
+    }
+
+    .confirm-btn {
+      color: #ffffff;
+
+      background: linear-gradient(
+        135deg,
+        #111216,
+        #292a2f
+      );
+    }
+
+    .confirm-btn:hover {
+      opacity: 0.92;
+    }
+
+    .confirm-btn:disabled {
+      cursor: wait;
+      opacity: 0.6;
+    }
+
+
+    /* =========================================================
+       MESSAGE
+    ========================================================= */
+
+    .message {
+      position: fixed;
+      z-index: 2000;
+
+      top: 20px;
+      left: 50%;
+
+      display: none;
+
+      width: min(92%, 520px);
+
+      padding: 14px 20px;
+
+      transform: translateX(-50%);
+
+      color: #ffffff;
+
+      background: #111216;
+
+      border-radius: 12px;
+
+      font-weight: 800;
+
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+
+
+    /* =========================================================
+       FOOTER
+    ========================================================= */
+
+    .footer {
+      margin: 40px 0 25px;
+
+      color: #70737a;
+
+      font-size: 13px;
+    }
+
+
+    /* =========================================================
+       MOBILE
+    ========================================================= */
+
+    @media (max-width: 700px) {
+
+      h1 {
+        margin-top: 25px;
+      }
+
+      .teams {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+
+        padding: 0 10px;
+      }
+
+      .team {
+        min-height: 190px;
+      }
+
+      .team img {
+        width: 68px;
+        height: 68px;
+      }
+
+      .team-name {
+        font-size: 13px;
+      }
+
+      .price {
+        font-size: 14px;
+      }
+
+      .content-section {
+        margin: 30px 12px;
+        padding: 20px 17px;
+      }
+
+      .content-section ol {
+        margin-left: 5px;
+        margin-right: 5px;
+      }
+
+      .recap-item {
+        font-size: 13px;
+      }
+    }
+
+
+    @media (max-width: 380px) {
+
+      .teams {
+        gap: 8px;
+      }
+
+      .team {
+        min-height: 180px;
+        padding-left: 7px;
+        padding-right: 7px;
+      }
+
+      .team img {
+        width: 62px;
+        height: 62px;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <!-- =======================================================
+       RESEAUX SOCIAUX
+  ======================================================== -->
+
+  <div class="social-bar">
+
+```
+<a
+  href="https://www.youtube.com/@SioTime"
+  target="_blank"
+  title="YouTube Siotime"
+>
+  <img
+    src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg"
+    alt="YouTube"
+  >
+</a>
+
+<a
+  href="https://www.instagram.com/siotime.cards/"
+  target="_blank"
+  title="Instagram Siotime"
+>
+  <img
+    src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png"
+    alt="Instagram"
+  >
+</a>
+
+<a
+  href="https://x.com/Siotimecards"
+  target="_blank"
+  title="X Siotime"
+>
+  <img
+    src="https://upload.wikimedia.org/wikipedia/commons/5/53/X_logo_2023_original.svg"
+    alt="X"
+  >
+</a>
+```
+
+  </div>
+
+  <!-- =======================================================
+       TITRE
+  ======================================================== -->
+
+  <h1>
+    📋 Inscriptions NBA Break Siotime S2-E15
+  </h1>
+
+  <div class="subtitle">
+    Choisis ton équipe et réserve ton spot pour le Break.
+  </div>
+
+  <!-- =======================================================
+       COMPTEUR
+  ======================================================== -->
+
+  <div class="timer-container">
+
+```
+<div class="timer-box">
+
+  <div class="timer-title">
+    ⏳ Ouverture des inscriptions
+  </div>
+
+  <div
+    class="timer"
+    id="openingTimer"
+  ></div>
+
+</div>
+```
+
+  </div>
+
+  <!-- =======================================================
+       EQUIPES
+  ======================================================== -->
+
+  <h2 class="section-title">
+    🏀 Choisis ton équipe
+  </h2>
+
+  <div
+    class="teams"
+    id="teams"
+  ></div>
+
+  <!-- =======================================================
+       RECAP
+  ======================================================== -->
+
+  <div class="recap-container">
+
+```
+<h2>
+  ✅ Récap des inscrits
+</h2>
+
+<div
+  class="recap"
+  id="recap"
+>
+  <div class="empty-recap">
+    Chargement...
+  </div>
+</div>
+```
+
+  </div>
+
+  <!-- =======================================================
+       SECTION BREAK
+  ======================================================== -->
+
+  <div class="content-section">
+
+```
+<h2>
+  📦 Le Break en détail
+</h2>
+
+<img
+  class="break-image"
+  src="Break.png"
+  alt="Break Siotime"
+>
+
+<h3>
+  🧾 Règlement du Break Siotime
+</h3>
+
+<ol>
+
+  <li>
+    Chaque participant achète un ou plusieurs spots correspondant à des équipes NBA.
+  </li>
+
+  <li>
+    Le tirage au sort des équipes est effectué en direct sur YouTube.
+  </li>
+
+  <li>
+    Toutes les cartes ouvertes pour une équipe sont envoyées au participant qui la possède.
+  </li>
+
+  <li>
+    Si une carte multi-joueurs apparaît, elle est attribuée par tirage au sort en live.
+  </li>
+
+  <li>
+    Toutes les cartes sont envoyées sous protection (sleeves, toploader, enveloppe bulle).
+  </li>
+
+  <li>
+    Les envois sont suivis et sécurisés.
+  </li>
+
+  <li>
+    Aucun remboursement n’est possible une fois le break commencé.
+  </li>
+
+  <li>
+    Siotime s’engage à la transparence totale lors du live et à une ambiance conviviale.
+  </li>
+
+</ol>
+
+<p>
+  🔴 Retrouvez-nous en direct sur
+  <strong>YouTube : Siotime</strong>
+  <br>
+
+  📸 Suivez nos actus sur Instagram & X pour les prochains breaks !
+</p>
+```
+
+  </div>
+
+  <!-- =======================================================
+       TOP CARTE
+  ======================================================== -->
+
+  <div class="content-section">
+
+```
+<h2>
+  ⭐ Top Carte du Dernier Break
+</h2>
+
+<img
+  class="top-card-image"
+  src="TOPCARTES.png"
+  alt="Top carte du dernier break"
+>
+
+<p class="top-card-name">
+  🔥 <strong>Jayson Tatum – Pressure Point</strong>
+</p>
+```
+
+  </div>
+
+  <!-- =======================================================
+       MODALE INSCRIPTION
+  ======================================================== -->
+
+  <div
+    class="modal"
+    id="inscriptionModal"
+  >
+
+```
+<div class="modal-content">
+
+  <h2>
+    📝 Inscription
+  </h2>
+
+  <div
+    class="selected-team"
+    id="selectedTeam"
+  ></div>
+
+
+  <label for="pseudo">
+    Pseudo
+  </label>
+
+  <input
+    type="text"
+    id="pseudo"
+    placeholder="Ton pseudo"
+    autocomplete="off"
+  >
+
+
+  <label for="social">
+    Réseau social
+  </label>
+
+  <select id="social">
+
+    <option value="">
+      Choisir...
+    </option>
+
+    <option value="X">
+      X
+    </option>
+
+    <option value="Instagram">
+      Instagram
+    </option>
+
+    <option value="YouTube">
+      YouTube
+    </option>
+
+  </select>
+
+
+  <div class="modal-buttons">
+
+    <button
+      type="button"
+      class="cancel-btn"
+      onclick="closeModal()"
+    >
+      Annuler
+    </button>
+
+    <button
+      type="button"
+      class="confirm-btn"
+      id="confirmButton"
+      onclick="confirmInscription()"
+    >
+      Confirmer
+    </button>
+
+  </div>
+
+</div>
+```
+
+  </div>
+
+  <!-- =======================================================
+       MESSAGE
+  ======================================================== -->
+
+  <div
+    class="message"
+    id="message"
+  ></div>
+
+  <!-- =======================================================
+       FOOTER
+  ======================================================== -->
+
+  <div class="footer">
+    © 2026 Siotime – Passion & Breaks NBA ⚡
+  </div>
+
+  <!-- =======================================================
+       JAVASCRIPT
+  ======================================================== -->
+
+  <script>
+
+    /* =========================================================
+       CONFIGURATION
+    ========================================================= */
+
+    const ENDPOINT =
+      "https://script.google.com/macros/s/AKfycbwsgj2MpdFs45mT3ZQHJwAOYxlemkEg4ODy8QhmdFDmbqSMsUDpi3-fTmxwlWdE-HZF/exec";
+
+
+    /* =========================================================
+       DATE UNIQUE DU BREAK
+       
+       ⚠️ C'est la seule date à modifier.
+       
+       JavaScript compte les mois de 0 à 11 :
+       0 = janvier
+       7 = août
+       8 = septembre
+    ========================================================= */
+
+    const openingDate =
+      new Date(2026, 7, 18, 20, 0, 0);
+
+
+    /* =========================================================
+       EQUIPES NBA
+    ========================================================= */
+
+    const teams = [
+
+      {
+        name: "Atlanta Hawks",
+        logo: "https://cdn.nba.com/logos/nba/1610612737/primary/L/logo.svg",
+        price: 12
+      },
+
+      {
+        name: "Brooklyn Nets",
+        logo: "https://cdn.nba.com/logos/nba/1610612751/primary/L/logo.svg",
+        price: 14
+      },
+
+      {
+        name: "Charlotte Hornets",
+        logo: "https://cdn.nba.com/logos/nba/1610612766/primary/L/logo.svg",
+        price: 22
+      },
+
+      {
+        name: "Cleveland Cavaliers",
+        logo: "https://cdn.nba.com/logos/nba/1610612739/primary/L/logo.svg",
+        price: 19
+      },
+
+      {
+        name: "Dallas Mavericks",
+        logo: "https://cdn.nba.com/logos/nba/1610612742/primary/L/logo.svg",
+        price: 45
+      },
+
+      {
+        name: "Denver Nuggets",
+        logo: "https://cdn.nba.com/logos/nba/1610612743/primary/L/logo.svg",
+        price: 24
+      },
+
+      {
+        name: "Detroit Pistons",
+        logo: "https://cdn.nba.com/logos/nba/1610612765/primary/L/logo.svg",
+        price: 15
+      },
+
+      {
+        name: "Golden State Warriors",
+        logo: "https://cdn.nba.com/logos/nba/1610612744/primary/L/logo.svg",
+        price: 35
+      },
+
+      {
+        name: "Houston Rockets",
+        logo: "https://cdn.nba.com/logos/nba/1610612745/primary/L/logo.svg",
+        price: 20
+      },
+
+      {
+        name: "Indiana Pacers",
+        logo: "https://cdn.nba.com/logos/nba/1610612754/primary/L/logo.svg",
+        price: 12
+      },
+
+      {
+        name: "Los Angeles Clippers",
+        logo: "https://cdn.nba.com/logos/nba/1610612746/primary/L/logo.svg",
+        price: 17
+      },
+
+      {
+        name: "Los Angeles Lakers",
+        logo: "https://cdn.nba.com/logos/nba/1610612747/primary/L/logo.svg",
+        price: 37
+      },
+
+      {
+        name: "Memphis Grizzlies",
+        logo: "https://cdn.nba.com/logos/nba/1610612763/primary/L/logo.svg",
+        price: 18
+      },
+
+      {
+        name: "Miami Heat",
+        logo: "https://cdn.nba.com/logos/nba/1610612748/primary/L/logo.svg",
+        price: 13
+      },
+
+      {
+        name: "Milwaukee Bucks",
+        logo: "https://cdn.nba.com/logos/nba/1610612749/primary/L/logo.svg",
+        price: 26
+      },
+
+      {
+        name: "Minnesota Timberwolves",
+        logo: "https://cdn.nba.com/logos/nba/1610612750/primary/L/logo.svg",
+        price: 24
+      },
+
+      {
+        name: "New Orleans Pelicans",
+        logo: "https://cdn.nba.com/logos/nba/1610612740/primary/L/logo.svg",
+        price: 15
+      },
+
+      {
+        name: "New York Knicks",
+        logo: "https://cdn.nba.com/logos/nba/1610612752/primary/L/logo.svg",
+        price: 22
+      },
+
+      {
+        name: "Oklahoma City Thunder",
+        logo: "https://cdn.nba.com/logos/nba/1610612760/primary/L/logo.svg",
+        price: 31
+      },
+
+      {
+        name: "Orlando Magic",
+        logo: "https://cdn.nba.com/logos/nba/1610612753/primary/L/logo.svg",
+        price: 14
+      },
+
+      {
+        name: "Philadelphia 76ers",
+        logo: "https://cdn.nba.com/logos/nba/1610612755/primary/L/logo.svg",
+        price: 23
+      },
+
+      {
+        name: "Phoenix Suns",
+        logo: "https://cdn.nba.com/logos/nba/1610612756/primary/L/logo.svg",
+        price: 19
+      },
+
+      {
+        name: "Portland Trail Blazers",
+        logo: "https://cdn.nba.com/logos/nba/1610612757/primary/L/logo.svg",
+        price: 11
+      },
+
+      {
+        name: "Sacramento Kings",
+        logo: "https://cdn.nba.com/logos/nba/1610612758/primary/L/logo.svg",
+        price: 15
+      },
+
+      {
+        name: "San Antonio Spurs",
+        logo: "https://cdn.nba.com/logos/nba/1610612759/primary/L/logo.svg",
+        price: 42
+      },
+
+      {
+        name: "Toronto Raptors",
+        logo: "https://cdn.nba.com/logos/nba/1610612761/primary/L/logo.svg",
+        price: 12
+      },
+
+      {
+        name: "Utah Jazz",
+        logo: "https://cdn.nba.com/logos/nba/1610612762/primary/L/logo.svg",
+        price: 16
+      },
+
+      {
+        name: "Washington Wizards",
+        logo: "https://cdn.nba.com/logos/nba/1610612764/primary/L/logo.svg",
+        price: 13
+      }
+
+    ];
+
+
+    /* =========================================================
+       ELEMENTS HTML
+    ========================================================= */
+
+    const teamsDiv =
+      document.getElementById("teams");
+
+    const recapDiv =
+      document.getElementById("recap");
+
+    const openingTimer =
+      document.getElementById("openingTimer");
+
+    const modal =
+      document.getElementById("inscriptionModal");
+
+    const selectedTeamDiv =
+      document.getElementById("selectedTeam");
+
+    const pseudoInput =
+      document.getElementById("pseudo");
+
+    const socialInput =
+      document.getElementById("social");
+
+    const confirmButton =
+      document.getElementById("confirmButton");
+
+    const messageDiv =
+      document.getElementById("message");
+
+
+    /* =========================================================
+       VARIABLES
+    ========================================================= */
+
+    let selectedTeam = null;
+    let inscriptionEnCours = false;
+
+
+    /* =========================================================
+       AFFICHAGE DES EQUIPES
+    ========================================================= */
+
+    function renderTeams(takenTeams = []) {
+
+      teamsDiv.innerHTML = "";
+
+      const inscriptionsOuvertes =
+        new Date() >= openingDate;
+
+
+      teams.forEach(team => {
+
+        const isTaken =
+          takenTeams.includes(team.name);
+
+
+        const div =
+          document.createElement("div");
+
+
+        div.className = "team";
+
+
+        if (isTaken) {
+          div.classList.add("taken");
+        }
+
+
+        let status = "";
+
+
+        if (isTaken) {
+
+          status = "🔒 Spot pris";
+
+        } else if (!inscriptionsOuvertes) {
+
+          status = "⏳ Bientôt disponible";
+
+        } else {
+
+          status = "✓ Disponible";
+
+        }
+
+
+        div.innerHTML = `
+
+          <img
+            src="${team.logo}"
+            alt="${team.name}"
+          >
+
+          <p class="team-name">
+            ${team.name}
+          </p>
+
+          <p class="price">
+            ${team.price}€
+          </p>
+
+          <div class="status">
+            ${status}
+          </div>
+
+        `;
+
+
+        if (
+          !isTaken &&
+          inscriptionsOuvertes
+        ) {
+
+          div.addEventListener(
+            "click",
+            () => openModal(team)
+          );
+
+        }
+
+
+        teamsDiv.appendChild(div);
+
+      });
+
+    }
+
+
+    /* =========================================================
+       OUVERTURE MODALE
+    ========================================================= */
+
+    function openModal(team) {
+
+      if (new Date() < openingDate) {
+
+        showMessage(
+          "⏳ Les inscriptions ne sont pas encore ouvertes."
+        );
+
+        return;
+      }
+
+
+      selectedTeam = team;
+
+
+      selectedTeamDiv.innerHTML = `
+        🏀 ${team.name}
+        — ${team.price}€
+      `;
+
+
+      pseudoInput.value = "";
+      socialInput.value = "";
+
+
+      modal.style.display = "flex";
+
+
+      setTimeout(() => {
+
+        pseudoInput.focus();
+
+      }, 100);
+
+    }
+
+
+    /* =========================================================
+       FERMETURE MODALE
+    ========================================================= */
+
+    function closeModal() {
+
+      modal.style.display = "none";
+
+      selectedTeam = null;
+
+    }
+
+
+    /* =========================================================
+       FERMER EN CLIQUANT A L'EXTERIEUR
+    ========================================================= */
+
+    modal.addEventListener(
+      "click",
+      function(event) {
+
+        if (event.target === modal) {
+          closeModal();
+        }
+
+      }
+    );
+
+
+    /* =========================================================
+       VALIDATION INSCRIPTION
+    ========================================================= */
+
+    async function confirmInscription() {
+
+      if (inscriptionEnCours) {
+        return;
+      }
+
+
+      if (!selectedTeam) {
+        return;
+      }
+
+
+      const pseudo =
+        pseudoInput.value.trim();
+
+      const social =
+        socialInput.value;
+
+
+      /* -------------------------------------------------------
+         VERIFICATION PSEUDO
+      ------------------------------------------------------- */
+
+      if (!pseudo) {
+
+        showMessage(
+          "⚠️ Merci d'indiquer ton pseudo."
+        );
+
+        pseudoInput.focus();
+
+        return;
+      }
+
+
+      /* -------------------------------------------------------
+         VERIFICATION RESEAU
+      ------------------------------------------------------- */
+
+      if (!social) {
+
+        showMessage(
+          "⚠️ Merci de choisir ton réseau social."
+        );
+
+        socialInput.focus();
+
+        return;
+      }
+
+
+      /* -------------------------------------------------------
+         VERIFICATION DATE
+      ------------------------------------------------------- */
+
+      if (new Date() < openingDate) {
+
+        showMessage(
+          "⏳ Les inscriptions ne sont pas encore ouvertes."
+        );
+
+        closeModal();
+
+        return;
+      }
+
+
+      /* -------------------------------------------------------
+         CONFIRMATION
+      ------------------------------------------------------- */
+
+      const confirmation =
+        confirm(
+          `Confirmer ton inscription ?\n\n` +
+          `${selectedTeam.name}\n` +
+          `${selectedTeam.price}€\n\n` +
+          `Pseudo : ${pseudo}\n` +
+          `Réseau : ${social}`
+        );
+
+
+      if (!confirmation) {
+        return;
+      }
+
+
+      /* -------------------------------------------------------
+         BLOCAGE PENDANT L'ENVOI
+      ------------------------------------------------------- */
+
+      inscriptionEnCours = true;
+
+      confirmButton.disabled = true;
+
+      confirmButton.innerText =
+        "Inscription...";
+
+
+      try {
+
+        const response =
+          await fetch(
+            ENDPOINT,
+            {
+              method: "POST",
+
+              body: JSON.stringify({
+                pseudo: pseudo,
+                social: social,
+                team: selectedTeam.name
+              })
+            }
+          );
+
+
+        const result =
+          await response.json();
+
+
+        /* -----------------------------------------------------
+           INSCRIPTION VALIDEE
+        ----------------------------------------------------- */
+
+        if (result.status === "ok") {
+
+          closeModal();
+
+          showMessage(
+            `✅ Inscription validée pour ${selectedTeam.name} !`
+          );
+
+          await loadData();
+
+          return;
+        }
+
+
+        /* -----------------------------------------------------
+           EQUIPE DEJA PRISE
+        ----------------------------------------------------- */
+
+        if (result.status === "taken") {
+
+          closeModal();
+
+          showMessage(
+            `⚠️ Désolé, les ${selectedTeam.name} viennent d'être pris.`
+          );
+
+          await loadData();
+
+          return;
+        }
+
+
+        /* -----------------------------------------------------
+           AUTRE ERREUR
+        ----------------------------------------------------- */
+
+        showMessage(
+          "❌ Une erreur est survenue. Merci de réessayer."
+        );
+
+        await loadData();
+
+      } catch (error) {
+
+        console.error(
+          "Erreur inscription :",
+          error
+        );
+
+
+        showMessage(
+          "❌ Impossible de contacter le serveur."
+        );
+
+        await loadData();
+
+      } finally {
+
+        inscriptionEnCours = false;
+
+        confirmButton.disabled = false;
+
+        confirmButton.innerText =
+          "Confirmer";
+
+      }
+
+    }
+
+
+    /* =========================================================
+       CHARGEMENT DES DONNEES
+    ========================================================= */
+
+    async function loadData() {
+
+      try {
+
+        /* -----------------------------------------------------
+           EQUIPES PRISES
+        ----------------------------------------------------- */
+
+        const takenResponse =
+          await fetch(
+            ENDPOINT + "?mode=taken",
+            {
+              cache: "no-store"
+            }
+          );
+
+
+        if (!takenResponse.ok) {
+          throw new Error(
+            "Erreur serveur taken"
+          );
+        }
+
+
+        const takenTeams =
+          await takenResponse.json();
+
+
+        renderTeams(
+          Array.isArray(takenTeams)
+            ? takenTeams
+            : []
+        );
+
+
+        /* -----------------------------------------------------
+           RECAP
+        ----------------------------------------------------- */
+
+        const recapResponse =
+          await fetch(
+            ENDPOINT + "?mode=recap",
+            {
+              cache: "no-store"
+            }
+          );
+
+
+        if (!recapResponse.ok) {
+          throw new Error(
+            "Erreur serveur recap"
+          );
+        }
+
+
+        const recapData =
+          await recapResponse.json();
+
+
+        recapDiv.innerHTML = "";
+
+
+        if (
+          !Array.isArray(recapData) ||
+          recapData.length === 0
+        ) {
+
+          recapDiv.innerHTML = `
+            <div class="empty-recap">
+              Aucune inscription pour le moment.
+            </div>
+          `;
+
+          return;
+        }
+
+
+        recapData.forEach(entry => {
+
+          const team =
+            teams.find(
+              t => t.name === entry.team
+            );
+
+
+          if (!team) {
+            return;
+          }
+
+
+          const div =
+            document.createElement("div");
+
+
+          div.className =
+            "recap-item";
+
+
+          div.innerHTML = `
+
+            <img
+              src="${team.logo}"
+              alt="${team.name}"
+            >
+
+            <strong>
+              ${entry.pseudo}
+            </strong>
+
+            <span class="recap-team">
+              (${team.name})
+            </span>
+
+          `;
+
+
+          recapDiv.appendChild(div);
+
+        });
+
+      } catch (error) {
+
+        console.error(
+          "Erreur chargement :",
+          error
+        );
+
+
+        recapDiv.innerHTML = `
+          <div class="empty-recap">
+            ⚠️ Impossible de charger le récapitulatif.
+          </div>
+        `;
+
+      }
+
+    }
+
+
+    /* =========================================================
+       COMPTEUR OUVERTURE
+    ========================================================= */
+
     function updateTimer() {
-  const now = new Date();
-  const diff = openingDate - now;
 
-  if (diff <= 0) {
-    openingTimer.innerHTML = "🟢 INSCRIPTIONS OUVERTES !";
-    return;
-  }
+      const now =
+        new Date();
 
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-  const minutes = Math.floor((diff / (1000 * 60)) % 60);
-  const seconds = Math.floor((diff / 1000) % 60);
 
-  openingTimer.innerHTML =
-    `🔥 Ouverture des inscriptions dans ${days}j ${hours}h ${minutes}m ${seconds}s`;
-}
+      const diff =
+        openingDate - now;
+
+
+      /* -------------------------------------------------------
+         INSCRIPTIONS OUVERTES
+      ------------------------------------------------------- */
+
+      if (diff <= 0) {
+
+        openingTimer.innerHTML =
+          "🟢 INSCRIPTIONS OUVERTES !";
+
+
+        openingTimer.classList.add(
+          "open"
+        );
+
+
+        return;
+      }
+
+
+      openingTimer.classList.remove(
+        "open"
+      );
+
+
+      /* -------------------------------------------------------
+         CALCUL TEMPS
+      ------------------------------------------------------- */
+
+      const days =
+        Math.floor(
+          diff / (1000 * 60 * 60 * 24)
+        );
+
+
+      const hours =
+        Math.floor(
+          (diff / (1000 * 60 * 60)) % 24
+        );
+
+
+      const minutes =
+        Math.floor(
+          (diff / (1000 * 60)) % 60
+        );
+
+
+      const seconds =
+        Math.floor(
+          (diff / 1000) % 60
+        );
+
+
+      openingTimer.innerHTML =
+        `🔥 Ouverture dans ` +
+        `${days}j ` +
+        `${String(hours).padStart(2, "0")}h ` +
+        `${String(minutes).padStart(2, "0")}m ` +
+        `${String(seconds).padStart(2, "0")}s`;
+
+    }
+
+
+    /* =========================================================
+       MESSAGE TEMPORAIRE
+    ========================================================= */
+
+    let messageTimeout;
+
+
+    function showMessage(text) {
+
+      clearTimeout(
+        messageTimeout
+      );
+
+
+      messageDiv.innerText =
+        text;
+
+
+      messageDiv.style.display =
+        "block";
+
+
+      messageTimeout =
+        setTimeout(() => {
+
+          messageDiv.style.display =
+            "none";
+
+        }, 3500);
+
+    }
+
+
+    /* =========================================================
+       INITIALISATION
+    ========================================================= */
 
     loadData();
+
     updateTimer();
-    setInterval(loadData, 5000);
-    setInterval(updateTimer, 1000);
+
+
+    /* ---------------------------------------------------------
+       Mise à jour du compteur
+    --------------------------------------------------------- */
+
+    setInterval(
+      updateTimer,
+      1000
+    );
+
+
+    /* ---------------------------------------------------------
+       Actualisation des spots / inscriptions
+    --------------------------------------------------------- */
+
+    setInterval(
+      loadData,
+      5000
+    );
+
   </script>
+
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
